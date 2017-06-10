@@ -14,7 +14,7 @@ if not os.path.exists(csv_dir):
     os.makedirs(csv_dir)
 
 for file in glob.glob(dataset_dir + '*.txt'):
-    data_frame = pd.read_csv(file, engine = 'python', skiprows = [1, 1], sep = '\t+\ *\t*', header = 0, skipinitialspace = True)
+    data_frame = pd.read_csv(file, engine = 'python', skiprows = [1, 1], sep = '\ *\t+\ *\t*', header = 0, skipinitialspace = True)
     # Strip whitespace from headers
     data_frame.columns = data_frame.columns.str.strip()
     csv_name = os.path.splitext(basename(file))[0]
