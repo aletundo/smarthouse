@@ -4,8 +4,9 @@
 * Number of labelled days: 14 days
 * Labels (ADLs included):  Leaving, Toileting, Showering, Sleeping, Breakfast, Lunch, Dinner, Snack, Spare_Time/TV, Grooming
 * Number of sensors: 12 sensors
-* Sensors: PIR: Shower, Basin, Cooktop
-    * Magnetic: Maindoor, Fridge, Cabinet, Cupboard
-		* Flush: Toilet
-		* Pressure: Seat, Bed
-		* Electric: Microwave, Toaster
+* Sensors:
+  * PIR: Shower, Basin, Cooktop
+  * Magnetic: Maindoor, Fridge, Cabinet, Cupboard
+	* Flush: Toilet
+	* Pressure: Seat, Bed
+	* Electric: Microwave, Toaster

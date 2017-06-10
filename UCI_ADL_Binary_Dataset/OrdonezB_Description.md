@@ -5,8 +5,8 @@
 * Labels (ADLs included): Leaving, Toileting, Showering, Sleeping, Breakfast, Lunch, Dinner, Snack, Spare_Time/TV, Grooming
 * Number of sensors: 12 sensors
 * Sensors:
-    * PIR: Shower, Basin, Door Kitchen, Door Bathroom, Door Bedroom
-		* Magnetic: Maindoor, Fridge, Cupboard
-		* Flush: Toilet
-		* Pressure: Seat, Bed
-		* Electric: Microwave 
+  * PIR: Shower, Basin, Door Kitchen, Door Bathroom, Door Bedroom
+	* Magnetic: Maindoor, Fridge, Cupboard
+	* Flush: Toilet
+	* Pressure: Seat, Bed
+	* Electric: Microwave 

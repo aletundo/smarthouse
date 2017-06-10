@@ -40,7 +40,7 @@ The dataset includes the following files:
 
 - For further info about this dataset please contact: fordonez@inf.uc3m.es
 
-# License
+## License
 Use of this dataset in publications must be acknowledged by referencing the following publication:
 
 	Ordóñez, F.J.; de Toledo, P.; Sanchis, A. Activity Recognition Using Hybrid Generative/Discriminative Models on Home Environments Using Binary Sensors. Sensors 2013, 13, 5460-5477.
