@@ -120,3 +120,7 @@ ENV/
 # .csv converted dataset files
 UCI_ADL_Binary_Dataset/csv
 *.csv
+
+# SQLite3
+*.db
+db/
