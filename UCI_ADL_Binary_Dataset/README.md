@@ -1,11 +1,11 @@
 # Activities of Daily Living (ADLs) Recognition Using Binary Sensors
 ###### Version 1.0
-###### Francisco Javier Ord��ez
+###### Francisco Javier Ordóñez
 ###### Office 2.1.B.17 (Sabatini Building)
 ###### Carlos III University of Madrid
 ###### Computer Science Deparment
-###### Escuela Polit�cnica Superior
-###### Avda. de la Universidad, 30. 28911 Legan�s. Madrid.  Spain.
+###### Escuela Politécnica Superior
+###### Avda. de la Universidad, 30. 28911 Leganés. Madrid.  Spain.
 
 ## Description
 
@@ -43,8 +43,8 @@ The dataset includes the following files:
 # License
 Use of this dataset in publications must be acknowledged by referencing the following publication:
 
-	Ord��ez, F.J.; de Toledo, P.; Sanchis, A. Activity Recognition Using Hybrid Generative/Discriminative Models on Home Environments Using Binary Sensors. Sensors 2013, 13, 5460-5477.
+	Ordóñez, F.J.; de Toledo, P.; Sanchis, A. Activity Recognition Using Hybrid Generative/Discriminative Models on Home Environments Using Binary Sensors. Sensors 2013, 13, 5460-5477.
 
 This dataset is distributed AS-IS and no responsibility implied or explicit can be addressed to the authors or their institutions for its use or misuse. Any commercial use is prohibited.
 
-Francisco Javier Ord��ez. November 2013.
+Francisco Javier Ordóñez. November 2013.
