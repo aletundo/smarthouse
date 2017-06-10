@@ -7,6 +7,6 @@
 * Sensors:
   * PIR: Shower, Basin, Cooktop
   * Magnetic: Maindoor, Fridge, Cabinet, Cupboard
-	* Flush: Toilet
-	* Pressure: Seat, Bed
-	* Electric: Microwave, Toaster
+  * Flush: Toilet
+  * Pressure: Seat, Bed
+  * Electric: Microwave, Toaster

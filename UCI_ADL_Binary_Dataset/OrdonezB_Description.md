@@ -6,7 +6,7 @@
 * Number of sensors: 12 sensors
 * Sensors:
   * PIR: Shower, Basin, Door Kitchen, Door Bathroom, Door Bedroom
-	* Magnetic: Maindoor, Fridge, Cupboard
-	* Flush: Toilet
-	* Pressure: Seat, Bed
-	* Electric: Microwave 
+  * Magnetic: Maindoor, Fridge, Cupboard
+  * Flush: Toilet
+  * Pressure: Seat, Bed
+  * Electric: Microwave
