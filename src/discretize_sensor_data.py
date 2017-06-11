@@ -1,5 +1,6 @@
 import pandas as pd
-import sqlite3, os, glob, datetime
+import sqlite3, os, glob, time
+from datetime import datetime, timedelta
 from os.path import basename
 
 # Change directory to the script directory
@@ -10,16 +11,52 @@ db_dir = '../db/'
 conn = sqlite3.connect(db_dir + 'example.db')
 cursor =  conn.cursor()
 
-def next_time_slice(tm, secs):
-    fulldate = datetime.datetime(tm.year, tm.month, tm.day, tm.hour, tm.minute, tm.second)
-    fulldate = fulldate + datetime.timedelta(seconds=secs)
-    return fulldate
+def next_timeslice(timeslice, secs):
+    next_slice = timeslice + timedelta(seconds=secs)
+    return next_slice
 
-timeslice = datetime.datetime(2011, 11, 28, 02, 27, 59)
-while (timeslice < datetime.datetime(2011, 12, 12, 07, 22, 21)):
-    next_slice = next_time_slice(timeslice, 60)
-    rows = cursor.execute('SELECT * FROM OrdonezA_Sensors WHERE datetime(start_time) >= ? AND datetime(start_time) <= ?', [timeslice, next_slice])
-    for row in rows:
-        print row[3]
-    timeslice = next_slice
+# Get all tables
+tables = cursor.execute('SELECT name FROM sqlite_master WHERE type="table" ORDER BY name')
+
+# Get all sensors table
+sensors_tables = list()
+for table in tables:
+    if 'Sensors' in table[0]:
+        sensors_tables.append(table[0])
+
+for table in sensors_tables:
+    # Prepare queries to get absolute_start_time and absolute_end_time
+    query_first = 'SELECT start_time FROM ' + table + ' ORDER BY start_time ASC LIMIT 1'
+    query_last = 'SELECT end_time FROM ' + table + ' ORDER BY start_time DESC LIMIT 1'
+
+    # Get absolute_start_time and absolute_end_time
+    first_row = cursor.execute(query_first)
+    absolute_start_time = datetime.strptime(first_row.fetchone()[0], '%Y-%m-%d %H:%M:%S')
+    last_row = cursor.execute(query_last)
+    absolute_end_time = datetime.strptime(last_row.fetchone()[0], '%Y-%m-%d %H:%M:%S')
+
+    # Get available sensors
+    rows = cursor.execute('SELECT DISTINCT location FROM ' + table).fetchall()
+    available_sensors = ' INTEGER DEFAULT 0, '.join(str(row[0]) for row in rows)
+
+    # Create observation vectors table
+    cursor.execute('DROP TABLE IF EXISTS ' + table + '_Observation_Vectors')
+    cursor.execute('CREATE TABLE ' + table + '_Observation_Vectors (timestamp TEXT,' + available_sensors + ' INTEGER DEFAULT 0)')
+
+    # Set the timeslice and get active sensors
+    timeslice = absolute_start_time
+    while (timeslice < absolute_end_time):
+        query = 'SELECT location, place FROM ' + table + ' WHERE datetime(start_time) <= ? AND datetime(end_time) >= ?'
+        rows = cursor.execute(query, [timeslice, timeslice]).fetchall()
+
+        if len(rows) == 0:
+            insert_query = 'INSERT INTO ' + table + '_Observation_Vectors(timestamp) VALUES (?)'
+        else:
+            active_sensors_keys = ','.join(str(row[0]) for row in rows)
+            active_sensors_values = ','.join(str(1) for row in rows)
+            insert_query = 'INSERT INTO ' + table + '_Observation_Vectors(timestamp,' + active_sensors_keys + ') VALUES (?,' + active_sensors_values + ')'
+
+        string_ts = timeslice.strftime("%Y-%m-%d %H:%M:%S")
+        cursor.execute(insert_query, [string_ts])
+        timeslice = next_timeslice(timeslice, 60)
 conn.close()
