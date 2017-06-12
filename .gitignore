@@ -118,7 +118,7 @@ ENV/
 # End of https://www.gitignore.io/api/linux,python
 
 # .csv converted dataset files
-UCI_ADL_Binary_Dataset/csv
+*/csv/
 *.csv
 
 # SQLite3
