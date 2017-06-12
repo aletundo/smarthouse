@@ -6,7 +6,7 @@ from os.path import basename
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 db_dir = '../db/'
-dataset_dir = '../UCI_ADL_Binary_Dataset/csv/'
+dataset_dir = '../dataset/csv/'
 
 # Make db sub directory if not exists
 if not os.path.exists(db_dir):
