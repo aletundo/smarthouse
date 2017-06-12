@@ -57,4 +57,5 @@ for table in adls_tables:
             cursor.execute(insert_query, [string_ts, row[0]])
 
         timeslice = next_timeslice(timeslice, 60)
+conn.commit()
 conn.close()
