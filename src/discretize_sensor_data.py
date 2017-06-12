@@ -43,8 +43,9 @@ for table in sensors_tables:
 
     # Get available sensors
     rows = cursor1.execute('SELECT DISTINCT location FROM ' + table).fetchall()
+    print table
+    print rows
     available_sensors = ' INTEGER DEFAULT 0, '.join(str(row[0]) for row in rows)
-
     # Create observation vectors table
     cursor2.execute('CREATE TABLE ' + table + '_Observation_Vectors (timestamp TEXT,' + available_sensors + ' INTEGER DEFAULT 0)')
 

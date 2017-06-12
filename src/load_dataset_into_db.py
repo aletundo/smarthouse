@@ -26,7 +26,8 @@ cursor = conn.cursor()
 cursor.execute('SELECT * FROM OrdonezB_Sensors AS O WHERE O.location LIKE "Door"')
 rows = cursor.fetchall()
 for row in rows:
-    print row
     fixed_location = row[2] + ' ' + row[4]
     cursor.execute('UPDATE OrdonezB_Sensors SET location = ? WHERE start_time = ? AND end_time = ?', [fixed_location, row[0], row[1]])
+
+print cursor.execute('SELECT DISTINCT location FROM OrdonezB_Sensors').fetchall()
 conn.close()
