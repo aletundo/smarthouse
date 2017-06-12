@@ -20,11 +20,13 @@ for file in glob.glob(dataset_dir + '*.csv'):
     table_name = os.path.splitext(basename(file))[0]
     data_frame.to_sql(table_name, conn, if_exists='replace', index=False)
 
-# Fix not unique sensors (Door Kitchen, Door Bedroom, Door Bathroom, Door Living)
+# Fix not unique sensors into OrdonezB_Sensors dataset
+# (e.g Door Kitchen, Door Bedroom, Door Bathroom, Door Living)
 cursor = conn.cursor()
 cursor.execute('SELECT * FROM OrdonezB_Sensors AS O WHERE O.location LIKE "Door"')
 rows = cursor.fetchall()
 for row in rows:
+    print row
     fixed_location = row[2] + ' ' + row[4]
     cursor.execute('UPDATE OrdonezB_Sensors SET location = ? WHERE start_time = ? AND end_time = ?', [fixed_location, row[0], row[1]])
 conn.close()
