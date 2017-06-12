@@ -18,7 +18,7 @@ def set_directories(source, dest):
     """
     # Change directory to the script directory
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
-    
+
     dataset_dir = source
     if dest == 'csv/':
         csv_dir = source + dest
@@ -62,7 +62,7 @@ def convert(source='../dataset/', dest='csv/', skip_rows = [1,1], source_separat
     """
     #Set the directories
     dataset_dir, csv_dir = set_directories(source, dest)
-    print dataset_dir, csv_dir
+
     # Read txt files and convert them into csv
     for file in glob.glob(dataset_dir + '*.txt'):
         data_frame = pd.read_csv(file, engine = 'python', skiprows = skip_rows, sep = source_separator, header = 0, skipinitialspace = True)
