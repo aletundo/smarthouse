@@ -1,5 +1,5 @@
 import pandas as pd
-import sqlite3, os, glob, time
+import sqlite3, os, glob, time, re
 from datetime import datetime, timedelta
 from os.path import basename
 
@@ -21,11 +21,12 @@ tables = cursor.execute('SELECT name FROM sqlite_master WHERE type="table" ORDER
 # Get all sensors table
 sensors_tables = list()
 for table in tables:
-    if 'Sensors' in table[0]:
+    if re.search('_Sensors\Z', table[0]) is not None:
         sensors_tables.append(table[0])
-        # Drop old tables in order to avoid issues on script re-execution
-        old_sensor_table = table[0] + '_Observation_Vectors'
-        cursor.execute('DROP TABLE IF EXISTS ' + old_sensor_table)
+    # Drop old tables in order to avoid issues on script re-execution
+    elif re.search('_Observation_Vectors\Z', table[0]) is not None:
+        cursor.execute('DROP TABLE IF EXISTS ' + table[0])
+        conn.commit()
 
 for table in sensors_tables:
     # Prepare queries to get absolute_start_time and absolute_end_time
@@ -44,6 +45,7 @@ for table in sensors_tables:
 
     # Create observation vectors table
     cursor.execute('CREATE TABLE ' + table + '_Observation_Vectors (timestamp TEXT,' + available_sensors + ' INTEGER DEFAULT 0)')
+    conn.commit()
 
     # Set the timeslice and get active sensors
     timeslice = absolute_start_time
@@ -63,5 +65,5 @@ for table in sensors_tables:
         cursor.execute(insert_query, [string_ts])
 
         timeslice = next_timeslice(timeslice, 60)
-conn.commit()
+    conn.commit()
 conn.close()

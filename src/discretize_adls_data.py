@@ -1,5 +1,5 @@
 import pandas as pd
-import sqlite3, os, glob, time
+import sqlite3, os, glob, time, re
 from datetime import datetime, timedelta
 from os.path import basename
 
@@ -21,11 +21,12 @@ tables = cursor.execute('SELECT name FROM sqlite_master WHERE type="table" ORDER
 # Get all ADLs tables
 adls_tables = list()
 for table in tables:
-    if 'ADLs' in table[0]:
+    if re.search('_ADLs\Z', table[0]) is not None:
         adls_tables.append(table[0])
-        # Drop old tables in order to avoid issues on script re-execution
-        old_adls_table = table[0] + '_Activity_States'
-        cursor.execute('DROP TABLE IF EXISTS ' + old_adls_table)
+    # Drop old tables in order to avoid issues on script re-execution
+    elif re.search('_Activity_States\Z', table[0]) is not None:
+        cursor.execute('DROP TABLE IF EXISTS ' + table[0])
+        conn.commit()
 
 for table in adls_tables:
     # Prepare queries to get absolute_start_time and absolute_end_time
@@ -40,6 +41,7 @@ for table in adls_tables:
 
     # Create activity states table
     cursor.execute('CREATE TABLE ' + table + '_Activity_States (timestamp TEXT, activity TEXT)')
+    conn.commit()
 
     # Set the timeslice and get activities
     timeslice = absolute_start_time
@@ -57,5 +59,5 @@ for table in adls_tables:
             cursor.execute(insert_query, [string_ts, row[0]])
 
         timeslice = next_timeslice(timeslice, 60)
-conn.commit()
+    conn.commit()
 conn.close()
