@@ -45,14 +45,21 @@ for row in obs_a:
 obs_array = np.array(obs_list)
 
 #Define the HMM model
-smarthouse_model = GaussianHMM(n_components=10, covariance_type="full", n_iter=100)
+smarthouse_model = GaussianHMM(n_components=10, covariance_type="full", n_iter=1000)
 
 #Model training and result printing
 smarthouse_model.fit(obs_array.reshape(-1, 1))
 score = smarthouse_model.score(obs_array.reshape(-1, 1))
 
-print('------------------------------------------------------------------------')
 print("Transition matrix")
 print(smarthouse_model.transmat_)
-print('------------------------------------------------------------------------')
+print("\n")
+
+print("Means and vars of each hidden state")
+for i in range(smarthouse_model.n_components):
+    print("{0}th hidden state".format(i))
+    print("mean = ", smarthouse_model.means_[i])
+    print("var = ", np.diag(smarthouse_model.covars_[i]))
+    print("\n")
+
 print 'Score:', score
