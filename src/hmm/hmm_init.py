@@ -3,6 +3,7 @@ import argparse
 import numpy as np
 from utils import db
 from hidden_markov import hmm
+from datetime import datetime, timedelta
 
 def create_start_matrix(n_states = None, dist = []):
     if dist:
@@ -33,6 +34,14 @@ def create_em_matrix(states_seq = [], obs_seq = [], n_states = None, n_obs = Non
 
     print("\nEmission matrix created! :)\n\n%s" % em_matrix)
     return em_matrix
+
+def one_leave_out(dataset, day):
+    conn = db.get_conn()
+    cursor = conn.cursor()
+    next_day = day + timedelta(days=1)
+    test = cursor.execute('SELECT * FROM ' + dataset + ' WHERE timestamp BETWEEN ? AND ?', [day, next_day]).fetchall()
+    train = cursor.execute('SELECT * FROM ' + dataset + ' WHERE timestamp < ? OR timestamp > ?', [day, next_day]).fetchall()
+    return test, train
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='This is an utility script to create the init parameters for the HMM.\n\
