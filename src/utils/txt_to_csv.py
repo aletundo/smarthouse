@@ -49,7 +49,7 @@ def fix_headers(csv_dir):
             fw.writelines(data)
         fw.close()
 
-def convert(source='../dataset/', dest='csv/', skip_rows = [1,1], source_separator='\ *\t+\ *\t*|\ *\ +\ *\ +', dest_separator = ','):
+def convert(source='../../dataset/', dest='csv/', skip_rows = [1,1], source_separator='\ *\t+\ *\t*|\ *\ +\ *\ +', dest_separator = ','):
     """Convert the txt dataset into csv
 
     Args:
@@ -60,6 +60,8 @@ def convert(source='../dataset/', dest='csv/', skip_rows = [1,1], source_separat
         dest_separator (str): The separator of the csv columns.
 
     """
+
+    print ("\nConverting txt files...")
     #Set the directories
     dataset_dir, csv_dir = set_directories(source, dest)
 
@@ -74,7 +76,7 @@ def convert(source='../dataset/', dest='csv/', skip_rows = [1,1], source_separat
     #Fix the csv files headers
     fix_headers(csv_dir)
 
-    print ("\n\nConversion completed! :)\nCsv files are in %s\n\n" % os.path.realpath(csv_dir))
+    print ("\nConversion completed! :)\nCsv files are in %s" % os.path.realpath(csv_dir))
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='This is an utility script to convert txt files into csv.\n\
@@ -82,7 +84,7 @@ if __name__ == "__main__":
     If destination is not specified it creates a \'csv\' directory in source directory.\n\
     Read further for more information.')
 
-    parser.add_argument('-s','--source', help='Source directory absolute path', default='../dataset/')
+    parser.add_argument('-s','--source', help='Source directory absolute path', default='../../dataset/')
     parser.add_argument('-d','--dest', help='Destination directory absolute path', default='csv/')
     parser.add_argument('-ssep','--sourceseparator', help='Txt separator. It accepts regex too (use \'\').', default='\ *\t+\ *\t*|\ *\ +\ *\ +')
     parser.add_argument('-dsep','--destseparator', help='Csv separator. It accepts regex too (use \'\').', default=',')
