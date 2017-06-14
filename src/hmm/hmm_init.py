@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import argparse
+import argparse, sqlite3
 import numpy as np
 from utils import db
 from hidden_markov import hmm
@@ -13,7 +13,7 @@ def create_start_matrix(n_states = None, dist = []):
         start_matrix = start_matrix / n_states
 
     print("\nStart matrix created! :)\n\n%s" % start_matrix)
-    return start_matrix
+    return np.asmatrix(start_matrix)
 
 def create_trans_matrix(states_seq = [], n_states = None):
     trans_matrix = np.zeros((n_states, n_states))
@@ -23,7 +23,7 @@ def create_trans_matrix(states_seq = [], n_states = None):
     trans_matrix = trans_matrix / len(states_seq)
 
     print("\nTransition matrix created! :)\n\n%s" % trans_matrix)
-    return trans_matrix
+    return np.asmatrix(trans_matrix)
 
 def create_em_matrix(states_seq = [], obs_seq = [], n_states = None, n_obs = None):
     em_matrix = np.zeros((n_states, n_obs))
@@ -33,15 +33,91 @@ def create_em_matrix(states_seq = [], obs_seq = [], n_states = None, n_obs = Non
     em_matrix = em_matrix / len(obs_seq)
 
     print("\nEmission matrix created! :)\n\n%s" % em_matrix)
-    return em_matrix
+    return np.asmatrix(em_matrix)
 
 def one_leave_out(dataset, day):
     conn = db.get_conn()
+    conn.row_factory = sqlite3.Row
+    conn.text_factory = str
     cursor = conn.cursor()
     next_day = day + timedelta(days=1)
     test = cursor.execute('SELECT * FROM ' + dataset + ' WHERE timestamp BETWEEN ? AND ?', [day, next_day]).fetchall()
     train = cursor.execute('SELECT * FROM ' + dataset + ' WHERE timestamp < ? OR timestamp > ?', [day, next_day]).fetchall()
     return test, train
+
+def get_possibile_states(dataset):
+    conn = db.get_conn()
+    conn.row_factory = sqlite3.Row
+    conn.text_factory = str
+    cursor = conn.cursor()
+
+    states_rows = cursor.execute('SELECT DISTINCT activity FROM ' + dataset).fetchall()
+    # Convert from tuples to list element
+    states_rows = [r[0] for r in states_rows]
+
+    possible_states = {}
+    label = 1
+    for s in states_rows:
+        if s not in possible_states:
+            possible_states[s] = label
+            label += 1
+    print("\n%s possible states:\n%s\n" % (dataset, possible_states))
+    return possible_states
+
+def get_possible_obs(dataset):
+    ''' The dictionary is inverted because it is used to build the observations
+        sequence. So the key is a possible configuration and the value is the
+        corrispective int label.
+    '''
+
+    conn = db.get_conn()
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    observation_rows = cursor.execute('SELECT * FROM ' + dataset).fetchall()
+
+    possible_obs = {}
+    label = 1
+
+    for row in observation_rows:
+        key = ''
+        for col in range(len(row.keys())):
+            # Skip timestamp col
+            if(col == 0):
+                pass
+            else:
+                key = key + str(row[col])
+        if key not in possible_obs:
+            possible_obs[key] = label
+            label += 1
+
+    print("\n%s possible observations:\n%s\n" % (dataset, possible_obs))
+
+    return possible_obs
+
+def build_obs_sequence(observation_rows, possible_obs):
+    obs_list = []
+    for row in observation_rows:
+        ob_vector = ''
+        for col in range(len(row.keys())):
+            # Skip timestamp col
+            if(col == 0):
+                pass
+            else:
+                ob_vector = ob_vector + str(row[col])
+        obs_list.append(possible_obs[ob_vector])
+
+    obs_seq = np.array(obs_list)
+    print("\nObservations sequence:\n%s\n" % obs_seq)
+    return obs_seq
+
+def build_states_sequence(state_rows, possible_states):
+    states_list = []
+    for row in state_rows:
+        states_list.append(possible_states[row['activity']])
+    states_seq = np.array(states_list)
+    print("\nStates sequence:\n%s\n" % states_seq)
+    return states_seq
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='This is an utility script to create the init parameters for the HMM.\n\
