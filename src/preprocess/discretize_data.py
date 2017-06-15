@@ -132,6 +132,29 @@ def discretize_adls():
 
     print ("\nADLs data discretization completed! :)")
 
+def fix_discretized_data():
+    conn, cursor = get_db()
+    # Get available sensors
+    rows = cursor.execute('SELECT DISTINCT location FROM OrdonezA_Sensors').fetchall()
+    available_sensors = ' = 0 AND '.join(str(row[0]) for row in rows)
+    rows = cursor.execute('SELECT DISTINCT activity FROM OrdonezA_ADLs_Activity_States').fetchall()
+    print rows
+
+    #Delete records with label = None and zeros sensors configuration
+    query_select = 'SELECT OA.timestamp FROM OrdonezA_ADLs_Activity_States AS OA JOIN OrdonezA_Sensors_Observation_Vectors AS OO\
+    ON OA.timestamp = OO.timestamp WHERE OA.activity IS NULL AND ' + available_sensors + ' = 0'
+    timestamps_to_delete = cursor.execute(query_select).fetchall()
+
+    for timestamp in timestamps_to_delete:
+        print timestamp[0]
+        delete_adls_query = 'DELETE FROM OrdonezA_ADLs_Activity_States WHERE timestamp = ?'
+        cursor.execute(delete_adls_query, [timestamp[0]])
+        conn.commit()
+        delete_sensors_query = 'DELETE FROM OrdonezA_Sensors_Observation_Vectors WHERE timestamp = ?'
+        cursor.execute(delete_sensors_query, [timestamp[0]])
+        conn.commit()
+
+
 def discretize_all():
     discretize_sensors()
     discretize_adls()
