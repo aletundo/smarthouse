@@ -9,9 +9,9 @@ from hidden_markov import hmm
 # Change directory to the script directory
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
-#txt_to_csv.convert()
-#load_dataset.load()
-#discretize_data.discretize_all()
+txt_to_csv.convert()
+load_dataset.load()
+discretize_data.discretize_all()
 
 # possible_obs = hmm_init.get_possible_obs('OrdonezA_Sensors_Observation_Vectors')
 # possible_states = hmm_init.get_possibile_states('OrdonezA_ADLs_Activity_States')
@@ -27,4 +27,4 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))
 # smarthouse_model = hmm(possible_states.keys(),possible_obs.keys(),start_matrix,trans_matrix,em_matrix)
 
 #discretize_data.fix_discretized_data()
-discretize_data.fix_remaining_data()
+#discretize_data.fix_remaining_data()
