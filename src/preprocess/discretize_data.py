@@ -203,12 +203,13 @@ def fix_remaining_data():
         ON OA.timestamp = OO.timestamp WHERE OA.activity IS NULL'
         num_rows_not_fixed = cursor.execute(number_of_row_none).fetchall()
 
-        num_of_rem_rows = num_rows_not_fixed
+        remaining_rows = num_rows_not_fixed
         fix_again = True
 
         while (fix_again):
+
             fixed_elements = []
-            num_rows_not_fixed = num_of_rem_rows
+            num_rows_not_fixed = remaining_rows
 
             #For each Nonw row find the previous and the next one, compare them and try to fix the current one
             for row in rows_to_fix:
@@ -290,13 +291,9 @@ def fix_remaining_data():
                     conn.commit()
                     fixed_elements.append(row)
 
-            #Count the remaining row with 'label = None'
-            query_rem2 = 'SELECT COUNT(*) FROM ' + table + '_Activity_States AS OA JOIN ' + sensors_tables[index] + '_Observation_Vectors AS OO\
-            ON OA.timestamp = OO.timestamp WHERE OA.activity IS NULL'
-            num_of_rem_rows = cursor.execute(query_rem2).fetchone()
-
-            fix_again = False if (num_of_rem_rows == num_rows_not_fixed) else True
-            print num_of_rem_rows
+            remaining_rows = len(rows_to_fix) - len(fixed_elements)
+            fix_again = False if (remaining_rows == num_rows_not_fixed) else True
+            print remaining_rows
             rows_to_fix = remove_fixed_elements(fixed_elements, rows_to_fix)
 
         query_select = 'SELECT timestamp FROM ' + table +'_Activity_States WHERE activity IS NULL'
