@@ -2,7 +2,7 @@
 import os
 from utils import txt_to_csv, db
 from preprocess import load_dataset, discretize_data
-from hmm import hmm_init
+from hmm import hmm_init, hmm_performance
 from datetime import datetime
 from hidden_markov import hmm
 
@@ -15,8 +15,8 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 possible_obs = hmm_init.get_possible_obs('OrdonezA_Sensors_Observation_Vectors')
 possible_states = hmm_init.get_possibile_states('OrdonezA_ADLs_Activity_States')
-test_adls, train_adls = hmm_init.one_leave_out('OrdonezA_ADLs_Activity_States', datetime(2011, 12, 01, 0, 0, 0))
-test_sensors, train_sensors = hmm_init.one_leave_out('OrdonezA_Sensors_Observation_Vectors', datetime(2011, 12, 01, 0, 0, 0))
+test_adls, train_adls = hmm_init.one_leave_out('OrdonezA_ADLs_Activity_States', datetime(2011, 12, 9, 0, 0, 0))
+test_sensors, train_sensors = hmm_init.one_leave_out('OrdonezA_Sensors_Observation_Vectors', datetime(2011, 12, 9, 0, 0, 0))
 states_seq = hmm_init.build_states_sequence(train_adls, possible_states)
 obs_seq, obs_vectors = hmm_init.build_obs_sequence(train_sensors, possible_obs)
 
@@ -29,4 +29,6 @@ smarthouse_model = hmm(possible_states.keys(),possible_obs.keys(),start_matrix,t
 test_states_seq = hmm_init.build_states_sequence(test_adls, possible_states)
 test_obs_seq, test_obs_vectors = hmm_init.build_obs_sequence(test_sensors, possible_obs)
 
-print(smarthouse_model.viterbi(test_obs_vectors))
+viterbi_states_sequence = smarthouse_model.viterbi(test_obs_vectors)
+
+print hmm_performance.viterbi_accuracy(viterbi_states_sequence, test_adls)
