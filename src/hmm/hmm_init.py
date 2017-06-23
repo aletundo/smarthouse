@@ -106,6 +106,7 @@ def get_possible_obs(dataset):
 def build_obs_sequence(observation_rows, possible_obs):
     obs_list = []
     obs_vectors = []
+
     for row in observation_rows:
         ob_vector = ''
         for col in range(len(row.keys())):
@@ -119,16 +120,23 @@ def build_obs_sequence(observation_rows, possible_obs):
 
     obs_seq = np.array(obs_list)
     obs_vectors = np.array(obs_vectors)
+
     print("\nObservations sequence:\n%s\n" % obs_vectors)
     return obs_seq, obs_vectors
 
 def build_states_sequence(state_rows, possible_states):
-    states_list = []
+    states_value_list = []
+    states_label_list = []
+
     for row in state_rows:
-        states_list.append(possible_states[row['activity']])
-    states_seq = np.array(states_list)
-    print("\nStates sequence:\n%s\n" % states_seq)
-    return states_seq
+        states_value_list.append(possible_states[row['activity']])
+        states_label_list.append(row['activity'])
+        
+    states_value_seq = np.array(states_value_list)
+    states_label_seq = np.array(states_label_list)
+
+    print("\nStates sequence:\n%s\n" % states_label_seq)
+    return states_value_seq, states_label_seq
 
 
 if __name__ == "__main__":

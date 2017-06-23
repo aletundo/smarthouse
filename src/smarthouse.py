@@ -21,16 +21,16 @@ test_sensors, train_sensors = hmm_init.one_leave_out('OrdonezB_Sensors_Observati
 possible_states_array = sorted(possible_states, key=possible_states.get)
 possible_obs_array = sorted(possible_obs, key=possible_obs.get)
 
-states_seq = hmm_init.build_states_sequence(train_adls, possible_states)
-obs_seq, obs_vectors = hmm_init.build_obs_sequence(train_sensors, possible_obs)
+train_states_value_seq, states_label_seq = hmm_init.build_states_sequence(train_adls, possible_states)
+train_obs_seq, train_obs_vectors = hmm_init.build_obs_sequence(train_sensors, possible_obs)
 
 start_matrix = hmm_init.create_start_matrix(len(possible_states))
-trans_matrix = hmm_init.create_trans_matrix(states_seq, len(possible_states))
-em_matrix = hmm_init.create_em_matrix(states_seq, obs_seq, len(possible_states), len(possible_obs))
+trans_matrix = hmm_init.create_trans_matrix(train_states_value_seq, len(possible_states))
+em_matrix = hmm_init.create_em_matrix(train_states_value_seq, train_obs_seq, len(possible_states), len(possible_obs))
 
 smarthouse_model = hmm(possible_states_array, possible_obs_array, start_matrix,trans_matrix,em_matrix)
 
-test_states_seq = hmm_init.build_states_sequence(test_adls, possible_states)
+test_states_value_seq, test_states_label_seq = hmm_init.build_states_sequence(test_adls, possible_states)
 test_obs_seq, test_obs_vectors = hmm_init.build_obs_sequence(test_sensors, possible_obs)
 
 viterbi_states_sequence = smarthouse_model.viterbi(test_obs_vectors)
