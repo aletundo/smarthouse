@@ -15,7 +15,6 @@ def viterbi_accuracy(viterbi_states_sequence, test_adls):
         if(row[1] == viterbi_states_sequence[cont]):
             num_correct_states = num_correct_states + 1
             correct = correct + 1
-            print row[1], viterbi_states_sequence[cont], correct
         cont = cont + 1
 
     accuracy = num_correct_states / len(test_adls)

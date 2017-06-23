@@ -17,12 +17,11 @@ def create_start_matrix(n_states = None, dist = []):
     return np.asmatrix(start_matrix)
 def calc_probabilities(row):
     sum = np.sum(row)
-    print np.sum(row/sum)
     return row / sum
 
 def create_trans_matrix(states_seq = [], n_states = None):
 
-    trans_matrix = np.full((n_states, n_states), 1.0 / sys.maxint)
+    trans_matrix = np.full((n_states, n_states), 10.0**-5)
     #trans_matrix = np.zeros((n_states, n_states))
 
     for s in range(len(states_seq)-1):
@@ -31,11 +30,11 @@ def create_trans_matrix(states_seq = [], n_states = None):
     trans_matrix = np.apply_along_axis( calc_probabilities, axis=1, arr=trans_matrix )
 
     print("\nTransition matrix created! :)\n\n%s" % trans_matrix)
-    return np.asmatrix(trans_matrix)
+    return np.matrix(trans_matrix)
 
 def create_em_matrix(states_seq = [], obs_seq = [], n_states = None, n_obs = None):
-    em_matrix = np.zeros((n_states, n_obs))
-    #em_matrix = np.full((n_states, n_obs), 1.0 / sys.maxint)
+    #em_matrix = np.zeros((n_states, n_obs))
+    em_matrix = np.full((n_states, n_obs), 10.0**-5)
 
     for s in range(len(states_seq)-1):
         em_matrix[states_seq[s]-1, obs_seq[s]-1] += 1
@@ -43,7 +42,7 @@ def create_em_matrix(states_seq = [], obs_seq = [], n_states = None, n_obs = Non
     em_matrix = np.apply_along_axis( calc_probabilities, axis=1, arr=em_matrix )
 
     print("\nEmission matrix created! :)\n\n%s" % em_matrix)
-    return np.asmatrix(em_matrix)
+    return np.matrix(em_matrix)
 
 def one_leave_out(dataset, day):
     conn = db.get_conn()
