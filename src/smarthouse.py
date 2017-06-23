@@ -15,8 +15,8 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 possible_obs = hmm_init.get_possible_obs('OrdonezB_Sensors_Observation_Vectors')
 possible_states = hmm_init.get_possibile_states('OrdonezB_ADLs_Activity_States')
-test_adls, train_adls = hmm_init.one_leave_out('OrdonezB_ADLs_Activity_States', datetime(2012, 11, 12, 0, 0, 0))
-test_sensors, train_sensors = hmm_init.one_leave_out('OrdonezB_Sensors_Observation_Vectors', datetime(2012, 11, 12, 0, 0, 0))
+test_adls, train_adls = hmm_init.one_leave_out('OrdonezB_ADLs_Activity_States', datetime(2012, 11, 16, 0, 0, 0))
+test_sensors, train_sensors = hmm_init.one_leave_out('OrdonezB_Sensors_Observation_Vectors', datetime(2012, 11, 16, 0, 0, 0))
 
 possible_states_array = sorted(possible_states, key=possible_states.get)
 possible_obs_array = sorted(possible_obs, key=possible_obs.get)
@@ -37,3 +37,4 @@ viterbi_states_sequence = smarthouse_model.viterbi(test_obs_vectors)
 
 #print viterbi_states_sequence
 print hmm_performance.viterbi_accuracy(viterbi_states_sequence, test_adls)
+hmm_performance.test_measures(test_states_label_seq, viterbi_states_sequence, possible_states_array)

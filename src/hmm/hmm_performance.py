@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import numpy as np
+from sklearn import metrics
 from utils import db
 
 def viterbi_accuracy(viterbi_states_sequence, test_adls):
@@ -20,3 +21,15 @@ def viterbi_accuracy(viterbi_states_sequence, test_adls):
     accuracy = num_correct_states / len(test_adls)
 
     return accuracy, len(test_adls)
+
+def test_measures(correct_states, result_states, possible_states_array):
+
+    conf_matrix = metrics.confusion_matrix(correct_states, result_states, labels = possible_states_array)
+    precision = metrics.precision_score(correct_states, result_states, average = 'macro')
+    recall = metrics.recall_score(correct_states, result_states, average = 'macro')
+    f_measure = metrics.f1_score(correct_states, result_states, average = 'macro')
+
+    print "\nConfusion Matrix:\n%s\n" % conf_matrix
+    print "\nPrecision:\n%s\n" % precision
+    print "\nRecall:\n%s\n" % recall
+    print "\nFMeasure:\n%s\n" % f_measure
