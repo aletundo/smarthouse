@@ -36,5 +36,5 @@ test_obs_seq, test_obs_vectors = hmm_init.build_obs_sequence(test_sensors, possi
 viterbi_states_sequence = smarthouse_model.viterbi(test_obs_vectors)
 
 #print viterbi_states_sequence
-print hmm_performance.viterbi_accuracy(viterbi_states_sequence, test_adls)
+print (hmm_performance.viterbi_accuracy(viterbi_states_sequence, test_adls))
 hmm_performance.test_measures(test_states_label_seq, viterbi_states_sequence, possible_states_array)

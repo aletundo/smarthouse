@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 from os.path import basename
 from utils import db
 import sqlite3
-from itertools import ifilterfalse
 
 def get_db():
     # Change directory to the script directory
@@ -293,14 +292,13 @@ def fix_remaining_data():
 
             remaining_rows = len(rows_to_fix) - len(fixed_elements)
             fix_again = False if (remaining_rows == num_rows_not_fixed) else True
-            print remaining_rows
+
             rows_to_fix = remove_fixed_elements(fixed_elements, rows_to_fix)
 
         query_select = 'SELECT timestamp FROM ' + table +'_Activity_States WHERE activity IS NULL'
         timestamps_to_delete = cursor.execute(query_select).fetchall()
 
         for timestamp in timestamps_to_delete:
-            print timestamp, table, sensors_tables[index]
             delete_adls_query = 'DELETE FROM ' + table + '_Activity_States WHERE timestamp = ?'
             cursor.execute(delete_adls_query, [timestamp[0]])
             conn.commit()
@@ -308,18 +306,8 @@ def fix_remaining_data():
             cursor.execute(delete_sensors_query, [timestamp[0]])
             conn.commit()
 
-    print("\n### PRINTS FOR DEBUG PURPOSES MUST BE REMOVED ###")
-    row = cursor.execute('SELECT COUNT(*) FROM OrdonezA_ADLs_Activity_States').fetchone()
-    print row
-    row = cursor.execute('SELECT COUNT(*) FROM OrdonezA_Sensors_Observation_Vectors').fetchone()
-    print row
-    row = cursor.execute('SELECT COUNT(*) FROM OrdonezB_ADLs_Activity_States').fetchone()
-    print row
-    row = cursor.execute('SELECT COUNT(*) FROM OrdonezB_Sensors_Observation_Vectors').fetchone()
-    print row
-    print("\n#################################################")
     conn.close()
-    print '\nFixing procedure completed! :)'
+    print ('\nFixing procedure completed! :)')
 
 def remove_fixed_elements(fixed_elements, rows_to_fix):
     for el in fixed_elements:

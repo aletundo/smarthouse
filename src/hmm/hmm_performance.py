@@ -29,7 +29,7 @@ def test_measures(correct_states, result_states, possible_states_array):
     recall = metrics.recall_score(correct_states, result_states, average = 'macro')
     f_measure = metrics.f1_score(correct_states, result_states, average = 'macro')
 
-    print "\nConfusion Matrix:\n%s\n" % conf_matrix
-    print "\nPrecision:\n%s\n" % precision
-    print "\nRecall:\n%s\n" % recall
-    print "\nFMeasure:\n%s\n" % f_measure
+    print ("\nConfusion Matrix:\n%s\n" % conf_matrix)
+    print ("\nPrecision:\n%s\n" % precision)
+    print ("\nRecall:\n%s\n" % recall)
+    print ("\nFMeasure:\n%s\n" % f_measure)
