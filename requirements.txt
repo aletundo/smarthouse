@@ -1,0 +1,5 @@
+numpy
+pandas
+hidden_markov
+sklearn
+flask

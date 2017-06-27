@@ -1,6 +1,6 @@
 import pandas as pd
 import os, glob
-from utils import db
+from ..utils import db
 from os.path import basename
 
 def load():
@@ -9,7 +9,7 @@ def load():
     # Change directory to the script directory
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
-    dataset_dir = '../../dataset/csv/'
+    dataset_dir = '../../../dataset/csv/'
 
     conn = db.get_conn()
 

@@ -3,7 +3,7 @@ import pandas as pd
 import os, glob, time, re
 from datetime import datetime, timedelta
 from os.path import basename
-from utils import db
+from ..utils import db
 import sqlite3
 
 def get_db():

@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+{% block title %}Smarthouse - keep under control your home activities{% endblock %}
+{% block container %}
+<div class="row row-eq-height">
+  <div class="col-md-8">
+    <div class="row">
+      <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#piechart">States pie chart</a></li>
+        <li><a data-toggle="tab" href="#barchart">States bar chart</a></li>
+      </ul>
+
+      <div class="tab-content">
+        <div id="piechart" class="tab-pane fade in active">
+          <p>Some content.</p>
+        </div>
+        <div id="barchart" class="tab-pane fade">
+          <p>Some content in menu 1.</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      </div>
+      <div class="col-md-6">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#random">Random</a></li>
+      <li><a data-toggle="tab" href="#preloaded">Preloaded</a></li>
+    </ul>
+    <!-- Random tab -->
+    <div class="tab-content">
+      <div id="random" class="tab-pane fade in active">
+        <br>
+
+        <div class="form-group col-md-12">
+          <label for="dataset">Sensors configuration:</label>
+          <select class="form-control" id="dataset">
+            <option value="OrdonezA">OrdonezA</option>
+            <option vaue="OrdonezB">OrdonezB</option>
+          </select>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label for="rate">Sampling rate:</label>
+          <input type="text" class="form-control" id="rate" placeholder="Rate in seconds" value="">
+        </div>
+
+        <div class="form-group col-md-6">
+          <label for="samples">Observations:</label>
+          <input type="text" class="form-control" id="samples" placeholder="Number of samples" value="">
+        </div>
+        <hr>
+        <!-- <div class="col-md-6">
+          <ul class="list-group">
+            {% for s in sensors_1 %}
+            <li class="list-group-item" id="{{loop.index - 1}}">{{ s }} <div class="led-red pull-right"></div></li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <ul class="list-group">
+            {% for s in sensors_2 %}
+            <li class="list-group-item" id="{{loop.index - 1}}">{{ s }} <div class="led-red pull-right"></div></li>
+            {% endfor %}
+          </ul>
+        </div> -->
+        <div class="col-md-6">
+          <ul class="list-group">
+            {% for s in sensors %}
+            <li class="list-group-item" id="sensor{{loop.index - 1}}">{{ s }} <div class="led-red pull-right"></div></li>
+            {% endfor %}
+          </ul>
+        </div>
+        <hr>
+        <center>
+          <div class="col-md-12">
+            <div class="btn-group">
+              <button id="playButton" type="button" class="btn btn-success"><i class="fa fa-play fa-fw"></i>Play</button>
+              <button type="button" class="btn btn-warning"><i class="fa fa-step-forward fa-fw"></i>Play step</button>
+              <button type="button" class="btn btn-danger"><i class="fa fa-stop fa-fw"></i>Stop</button>
+            </div>
+            <hr>
+            <button type="button" class="btn btn-primary btn-block"><i class="fa fa-magic fa-fw"></i>Run Viterbi algorithm</button>
+         </div>
+       </center>
+      </div>
+      <!-- /Random tab -->
+      <!-- Preloaded tab -->
+      <div id="preloaded" class="tab-pane fade">
+        <br>
+        <div class="form-group">
+          <label for="sel1">Dataset:</label>
+          <select class="form-control" id="sel1">
+            <option>Ordonez A</option>
+            <option>Ordonez B</option>
+          </select>
+        </div>
+      </div>
+      <!-- /Preloaded tab -->
+    </div>
+  </div>
+</div>
+{% endblock %}

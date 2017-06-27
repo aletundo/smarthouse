@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import argparse, sqlite3
 import numpy as np
-from utils import db
+from ..utils import db
 from hidden_markov import hmm
 from datetime import datetime, timedelta
 import sys
@@ -131,7 +131,7 @@ def build_states_sequence(state_rows, possible_states):
     for row in state_rows:
         states_value_list.append(possible_states[row['activity']])
         states_label_list.append(row['activity'])
-        
+
     states_value_seq = np.array(states_value_list)
     states_label_seq = np.array(states_label_list)
 

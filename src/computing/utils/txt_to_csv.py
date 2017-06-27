@@ -49,7 +49,7 @@ def fix_headers(csv_dir):
             fw.writelines(data)
         fw.close()
 
-def convert(source='../../dataset/', dest='csv/', skip_rows = [1,1], source_separator='\ *\t+\ *\t*|\ *\ +\ *\ +', dest_separator = ','):
+def convert(source='../../../dataset/', dest='csv/', skip_rows = [1,1], source_separator='\ *\t+\ *\t*|\ *\ +\ *\ +', dest_separator = ','):
     """Convert the txt dataset into csv
 
     Args:
@@ -84,7 +84,7 @@ if __name__ == "__main__":
     If destination is not specified it creates a \'csv\' directory in source directory.\n\
     Read further for more information.')
 
-    parser.add_argument('-s','--source', help='Source directory absolute path', default='../../dataset/')
+    parser.add_argument('-s','--source', help='Source directory absolute path', default='../../../dataset/')
     parser.add_argument('-d','--dest', help='Destination directory absolute path', default='csv/')
     parser.add_argument('-ssep','--sourceseparator', help='Txt separator. It accepts regex too (use \'\').', default='\ *\t+\ *\t*|\ *\ +\ *\ +')
     parser.add_argument('-dsep','--destseparator', help='Csv separator. It accepts regex too (use \'\').', default=',')
