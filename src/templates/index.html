@@ -11,10 +11,14 @@
 
       <div class="tab-content">
         <div id="piechart" class="tab-pane fade in active">
-          <p>Some content.</p>
+            <div class="row center-block" style="height:400px; width:400px">
+              <canvas id="randomPieChart"></canvas>
+            </div>
         </div>
         <div id="barchart" class="tab-pane fade">
-          <p>Some content in menu 1.</p>
+            <div>
+              <canvas id="randomBarChart"></canvas>
+            </div>
         </div>
       </div>
     </div>
@@ -113,6 +117,21 @@
               <option value="OrdonezA">Ordonez A</option>
               <option value="OrdonezB">Ordonez B</option>
             </select>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="training">Training days:</label>
+            <br>
+            <div id="slider-date" class="col-md-12">
+            </div>
+            <br>
+            <div id="event-start">
+            </div>
+            <div id="event-end">
+
+            </div>
           </div>
         </div>
 

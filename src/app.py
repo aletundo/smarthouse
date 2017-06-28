@@ -65,9 +65,6 @@ def viterbi():
 
     smarthouse_model = hmm(possible_states_array, possible_obs_array, start_matrix,trans_matrix,em_matrix)
 
-    #test_states_value_seq, test_states_label_seq = hmm_init.build_states_sequence(test_adls, possible_states)
-    #test_obs_seq, test_obs_vectors = hmm_init.build_obs_sequence(test_sensors, possible_obs)
-
     viterbi_states_sequence = smarthouse_model.viterbi(observations)
 
     return jsonify(viterbi_states_sequence)
