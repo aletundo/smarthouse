@@ -38,8 +38,8 @@
         <br>
 
         <div class="form-group col-md-12">
-          <label for="dataset">Sensors configuration:</label>
-          <select class="form-control" id="dataset">
+          <label for="sensors_config">Sensors configuration:</label>
+          <select class="form-control dataset" id="sensors_config">
             <option value="OrdonezA">OrdonezA</option>
             <option vaue="OrdonezB">OrdonezB</option>
           </select>
@@ -54,25 +54,24 @@
           <label for="samples">Observations:</label>
           <input type="text" class="form-control" id="samples" placeholder="Number of samples" value="">
         </div>
-        <hr>
-        <!-- <div class="col-md-6">
+
+        <div class="col-md-12">
+              <em>Observation: </em><strong><span class="configuration" style="letter-spacing: 2px;"></span></strong>
+              <br>
+              <br>
+        </div>
+
+        <div class="col-md-6">
           <ul class="list-group">
-            {% for s in sensors_1 %}
-            <li class="list-group-item" id="{{loop.index - 1}}">{{ s }} <div class="led-red pull-right"></div></li>
+            {% for k,s in sensors_1.items() %}
+            <li class="list-group-item sensor{{k}}"><span>{{ s }}</span> <div class="led-red pull-right"></div></li>
             {% endfor %}
           </ul>
         </div>
         <div class="col-md-6">
           <ul class="list-group">
-            {% for s in sensors_2 %}
-            <li class="list-group-item" id="{{loop.index - 1}}">{{ s }} <div class="led-red pull-right"></div></li>
-            {% endfor %}
-          </ul>
-        </div> -->
-        <div class="col-md-6">
-          <ul class="list-group">
-            {% for s in sensors %}
-            <li class="list-group-item" id="sensor{{loop.index - 1}}">{{ s }} <div class="led-red pull-right"></div></li>
+            {% for k,s in sensors_2.items() %}
+            <li class="list-group-item sensor{{k}}"><span>{{ s }}</span> <div class="led-red pull-right"></div></li>
             {% endfor %}
           </ul>
         </div>
@@ -80,7 +79,7 @@
         <center>
           <div class="col-md-12">
             <div class="btn-group">
-              <button id="playButton" type="button" class="btn btn-success"><i class="fa fa-play fa-fw"></i>Play</button>
+              <button type="button" class="playButton btn btn-success"><i class="fa fa-play fa-fw"></i>Play</button>
               <button type="button" class="btn btn-warning"><i class="fa fa-step-forward fa-fw"></i>Play step</button>
               <button type="button" class="btn btn-danger"><i class="fa fa-stop fa-fw"></i>Stop</button>
             </div>
@@ -93,13 +92,48 @@
       <!-- Preloaded tab -->
       <div id="preloaded" class="tab-pane fade">
         <br>
-        <div class="form-group">
-          <label for="sel1">Dataset:</label>
-          <select class="form-control" id="sel1">
-            <option>Ordonez A</option>
-            <option>Ordonez B</option>
-          </select>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="dataset">Dataset:</label>
+            <select class="form-control" id="dataset">
+              <option value="OrdonezA">Ordonez A</option>
+              <option value="OrdonezB">Ordonez B</option>
+            </select>
+          </div>
         </div>
+
+        <div class="col-md-12">
+              <em>Observation: </em><strong><span class="configuration" style="letter-spacing: 2px;"></span></strong>
+              <br>
+              <br>
+        </div>
+
+        <div class="col-md-6">
+          <ul class="list-group">
+            {% for k,s in sensors_1.items() %}
+            <li class="list-group-item sensor{{k}}"><span>{{ s }}</span> <div class="led-red pull-right"></div></li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <ul class="list-group">
+            {% for k,s in sensors_2.items() %}
+            <li class="list-group-item sensor{{k}}"><span>{{ s }}</span> <div class="led-red pull-right"></div></li>
+            {% endfor %}
+          </ul>
+        </div>
+        <hr>
+        <center>
+          <div class="col-md-12">
+            <div class="btn-group">
+              <button type="button" class="playButton btn btn-success"><i class="fa fa-play fa-fw"></i>Play</button>
+              <button type="button" class="btn btn-warning"><i class="fa fa-step-forward fa-fw"></i>Play step</button>
+              <button type="button" class="btn btn-danger"><i class="fa fa-stop fa-fw"></i>Stop</button>
+            </div>
+            <hr>
+            <button type="button" class="btn btn-primary btn-block"><i class="fa fa-magic fa-fw"></i>Run Viterbi algorithm</button>
+         </div>
+       </center>
       </div>
       <!-- /Preloaded tab -->
     </div>
