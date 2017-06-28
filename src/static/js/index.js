@@ -1,16 +1,24 @@
 $(document).ready(function(){
+  var observations = [];
+
   $('#playButton').click(function(){
-    var samples = ($('#samples').val() !== '') ? $('#samples').val() : 10;
-    var rate = ($('#rate').val() !== '') ? $('#rate').val()*1000 : 5000;
-    var dataset = $('.dataset').val();
-    i = 0;
+    var samples = ($('#samples').val() !== '') ? parseInt($('#samples').val()) : 10;
+    var rate = ($('#rate').val() !== '') ? parseInt($('#rate').val())*1000 : 5000;
+    var dataset = $('#sensors_config').val();
+
+    observations = [];
+    $('#observationsRandomList').html('');
+    $('#statesRandomList').html('');
+    i = 1;
       (function poll() {
         $.ajax({
             url: "/sampling?dataset=" + dataset,
             type: "GET",
             success: function(result) {
+              ++i;
               configuration = result['configuration'];
-              splitted = result['splitted']
+              observations.push(configuration);
+              splitted = result['splitted'];
               for (var j = 0; j < splitted.length; j++) {
                 if (splitted[j] === '0') {
                   $('.sensor' + j + ' div').removeClass('led-green');
@@ -20,14 +28,30 @@ $(document).ready(function(){
                   $('.sensor' + j + ' div').addClass('led-green');
                 }
               }
-              $('.configuration').html(configuration)
-              ++i;
+              $('.configuration').html(configuration);
+              $('#observationsRandomList').append('<li class="list-group-item">' + configuration + '</li>');
             },
             dataType: "json",
-            complete: (i < samples - 1) ? setTimeout(function() {poll()}, rate) : '',
+            complete: (i < (samples) ) ? setTimeout(function() {poll();}, rate) : '',
             timeout: 2000
         });
       })();
+  });
+
+  $('#viterbiRandomButton').click(function(){
+    var dataset = $('#sensors_config').val();
+    $.ajax({
+        url: "/viterbi",
+        type: "POST",
+        data: {dataset:dataset, observations: observations},
+        success: function(states) {
+          for (s of states) {
+            $('#statesRandomList').append('<li class="list-group-item">' + s + '</li>');
+          }
+        },
+        dataType: "json",
+        timeout: 2000
+    });
   });
 
 

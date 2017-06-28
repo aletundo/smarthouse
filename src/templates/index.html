@@ -20,10 +20,24 @@
     </div>
     <div class="row">
       <div class="col-md-6">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading">Observations</div>
+          <!-- List group -->
+          <ul id="observationsRandomList" class="list-group">
+          </ul>
+        </div>
       </div>
       <div class="col-md-6">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">States</div>
+            <!-- List group -->
+            <ul id="statesRandomList" class="list-group">
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -39,7 +53,7 @@
 
         <div class="form-group col-md-12">
           <label for="sensors_config">Sensors configuration:</label>
-          <select class="form-control dataset" id="sensors_config">
+          <select class="form-control" id="sensors_config">
             <option value="OrdonezA">OrdonezA</option>
             <option vaue="OrdonezB">OrdonezB</option>
           </select>
@@ -56,9 +70,9 @@
         </div>
 
         <div class="col-md-12">
-              <em>Observation: </em><strong><span class="configuration" style="letter-spacing: 2px;"></span></strong>
-              <br>
-              <br>
+          <em>Observation: </em><strong><span class="configuration" style="letter-spacing: 2px;"></span></strong>
+          <br>
+          <br>
         </div>
 
         <div class="col-md-6">
@@ -79,14 +93,14 @@
         <center>
           <div class="col-md-12">
             <div class="btn-group">
-              <button type="button" class="playButton btn btn-success"><i class="fa fa-play fa-fw"></i>Play</button>
+              <button type="button" id="playButton" class="btn btn-success"><i class="fa fa-play fa-fw"></i>Play</button>
               <button type="button" class="btn btn-warning"><i class="fa fa-step-forward fa-fw"></i>Play step</button>
               <button type="button" class="btn btn-danger"><i class="fa fa-stop fa-fw"></i>Stop</button>
             </div>
             <hr>
-            <button type="button" class="btn btn-primary btn-block"><i class="fa fa-magic fa-fw"></i>Run Viterbi algorithm</button>
-         </div>
-       </center>
+            <button type="button" id="viterbiRandomButton"class="btn btn-primary btn-block"><i class="fa fa-magic fa-fw"></i>Run Viterbi algorithm</button>
+          </div>
+        </center>
       </div>
       <!-- /Random tab -->
       <!-- Preloaded tab -->
@@ -103,9 +117,9 @@
         </div>
 
         <div class="col-md-12">
-              <em>Observation: </em><strong><span class="configuration" style="letter-spacing: 2px;"></span></strong>
-              <br>
-              <br>
+          <em>Observation: </em><strong><span class="configuration" style="letter-spacing: 2px;"></span></strong>
+          <br>
+          <br>
         </div>
 
         <div class="col-md-6">
@@ -125,15 +139,10 @@
         <hr>
         <center>
           <div class="col-md-12">
-            <div class="btn-group">
-              <button type="button" class="playButton btn btn-success"><i class="fa fa-play fa-fw"></i>Play</button>
-              <button type="button" class="btn btn-warning"><i class="fa fa-step-forward fa-fw"></i>Play step</button>
-              <button type="button" class="btn btn-danger"><i class="fa fa-stop fa-fw"></i>Stop</button>
-            </div>
             <hr>
-            <button type="button" class="btn btn-primary btn-block"><i class="fa fa-magic fa-fw"></i>Run Viterbi algorithm</button>
-         </div>
-       </center>
+            <button type="button" id="viterbiPreloadedButton" class="btn btn-primary btn-block"><i class="fa fa-magic fa-fw"></i>Run Viterbi algorithm</button>
+          </div>
+        </center>
       </div>
       <!-- /Preloaded tab -->
     </div>
