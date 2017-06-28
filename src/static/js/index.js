@@ -1,4 +1,11 @@
 $(document).ready(function(){
+  var dynamicColors = function() {
+    var r = Math.floor(Math.random() * 255);
+    var g = Math.floor(Math.random() * 255);
+    var b = Math.floor(Math.random() * 255);
+    return "rgb(" + r + "," + g + "," + b + ")";
+}
+
   var observations = [];
 
   $('#playButton').click(function(){
@@ -44,10 +51,41 @@ $(document).ready(function(){
       url: "/viterbi",
       type: "POST",
       data: {dataset:dataset, observations: observations},
-      success: function(states) {
-        for (s of states) {
+      success: function(result) {
+        for (s of result['viterbi_states_sequence']) {
           $('#statesRandomList').append('<li class="list-group-item">' + s + '</li>');
         }
+
+        var labels = [], datacounters = [], colors = [];
+
+        for (var c in result['counter']) {
+          datacounters.push(result['counter'][c]);
+          labels.push(c);
+          colors.push(dynamicColors());
+        }
+
+        var data = {
+          datasets: [{
+            data: datacounters,
+            backgroundColor: colors
+          }],
+          labels: labels,
+        };
+
+
+        var options = {
+          responsive: true,
+        };
+        
+        var containerDiv = $('#randomPieChart').parent();
+        $('#randomPieChart').remove();
+        containerDiv.html('<canvas id="randomPieChart"><canvas>');
+        var ctx = document.getElementById("randomPieChart").getContext('2d');
+        var myLineChart = new Chart(ctx,{
+          type: 'doughnut',
+          data: data,
+          options: options
+        });
       },
       dataType: "json",
       timeout: 2000
@@ -95,32 +133,6 @@ $(document).ready(function(){
       timeout: 2000
     });
   };
-
-  var data = {
-    datasets: [{
-      data: [10, 20, 30]
-    }],
-
-    // These labels appear in the legend and in the tooltips when hovering different arcs
-    labels: [
-      'Red',
-      'Yellow',
-      'Blue'
-    ]
-  };
-
-
-  var options = {
-    responsive: true,
-  };
-
-  // Get the context of the canvas element we want to select
-  var ctx = document.getElementById("randomPieChart").getContext('2d');
-  var myLineChart = new Chart(ctx,{
-    type: 'doughnut',
-    data: data,
-    options: options
-  });
 
   // Create a list of day and monthnames.
   var weekdays = [

@@ -5,6 +5,7 @@ from random import randint
 from computing.hmm import hmm_init
 from computing.utils import db
 from hidden_markov import hmm
+from collections import Counter
 
 app = Flask('smarthouse', instance_relative_config=True)
 # Load the default configuration
@@ -66,8 +67,11 @@ def viterbi():
     smarthouse_model = hmm(possible_states_array, possible_obs_array, start_matrix,trans_matrix,em_matrix)
 
     viterbi_states_sequence = smarthouse_model.viterbi(observations)
-
-    return jsonify(viterbi_states_sequence)
+    counter = Counter(viterbi_states_sequence)
+    result = dict()
+    result['counter'] = dict(counter)
+    result['viterbi_states_sequence'] = viterbi_states_sequence
+    return jsonify(result)
 
 def get_sensors_conf_from_db(dataset):
     conn = db.get_conn()
