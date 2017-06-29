@@ -8,7 +8,7 @@ $(document).ready(function(){
 
   var observations = [];
 
-  $('#playButton').click(function(){
+  $('#samplingButton').click(function(){
     var samples = ($('#samples').val() !== '') ? parseInt($('#samples').val()) : 10;
     var rate = ($('#rate').val() !== '') ? parseInt($('#rate').val())*1000 : 5000;
     var dataset = $('#sensors_config').val();
@@ -47,10 +47,11 @@ $(document).ready(function(){
 
   $('#viterbiRandomButton').click(function(){
     var dataset = $('#sensors_config').val();
+    var mode = 'Random';
     $.ajax({
       url: "/viterbi",
       type: "POST",
-      data: {dataset:dataset, observations: observations},
+      data: {dataset:dataset, observations: observations, mode: mode},
       success: function(result) {
         for (s of result['viterbi_states_sequence']) {
           $('#statesRandomList').append('<li class="list-group-item">' + s + '</li>');
@@ -76,7 +77,7 @@ $(document).ready(function(){
         var options = {
           responsive: true,
         };
-        
+
         var containerDiv = $('#randomPieChart').parent();
         $('#randomPieChart').remove();
         containerDiv.html('<canvas id="randomPieChart"><canvas>');
@@ -89,6 +90,56 @@ $(document).ready(function(){
       },
       dataType: "json",
       timeout: 2000
+    });
+  });
+
+  $('#viterbiPreloadedButton').click(function(){
+    var dataset = $('#dataset').val();
+    var mode = 'Preloaded';
+    var train_days = document.getElementById('training').noUiSlider.get();
+    train_days = train_days.map(function(e) {
+      var date = new Date(parseInt(e));
+      date.setUTCHours(00,00,00);
+      return date.toISOString().replace('T',' ').split('.')[0];
+    });
+    $.ajax({
+      url: "/viterbi",
+      type: "POST",
+      data: {dataset:dataset, mode: mode, start_day: train_days[0], end_day: train_days[1]},
+      success: function(result) {
+        var labels = [], datacounters = [], colors = [];
+
+        for (var c in result['counter']) {
+          datacounters.push(result['counter'][c]);
+          labels.push(c);
+          colors.push(dynamicColors());
+        }
+
+        var data = {
+          datasets: [{
+            data: datacounters,
+            backgroundColor: colors
+          }],
+          labels: labels,
+        };
+
+
+        var options = {
+          responsive: true,
+        };
+
+        var containerDiv = $('#randomPieChart').parent();
+        $('#randomPieChart').remove();
+        containerDiv.html('<canvas id="randomPieChart"><canvas>');
+        var ctx = document.getElementById("randomPieChart").getContext('2d');
+        var myLineChart = new Chart(ctx,{
+          type: 'doughnut',
+          data: data,
+          options: options
+        });
+      },
+      dataType: "json",
+      timeout: 50000
     });
   });
 
@@ -173,7 +224,7 @@ $(document).ready(function(){
   }
 
   function updateSliderRange ( min, max, start ) {
-    document.getElementById('slider-date').noUiSlider.updateOptions({
+    document.getElementById('training').noUiSlider.updateOptions({
       range: {
         'min': min,
         'max': max
@@ -182,7 +233,7 @@ $(document).ready(function(){
     });
   }
 
-  var dateSlider = document.getElementById('slider-date');
+  var dateSlider = document.getElementById('training');
 
   noUiSlider.create(dateSlider, {
     // Create two timestamps to define a range.
@@ -196,7 +247,7 @@ $(document).ready(function(){
     step: 24 * 60 * 60 * 1000,
 
     // Two more timestamps indicate the handle starting positions.
-    start: [ timestamp('2011-11-29'), timestamp('2011-12-11') ]
+    start: [ timestamp('2011-11-29 00:00:00'), timestamp('2011-12-11 00:00:00') ]
   });
 
 

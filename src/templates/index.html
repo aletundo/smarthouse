@@ -22,6 +22,7 @@
         </div>
       </div>
     </div>
+    <br>
     <div class="row">
       <div class="col-md-6">
         <div class="panel panel-default">
@@ -46,7 +47,7 @@
     </div>
   </div>
   <div class="col-md-4">
-    <ul class="nav nav-tabs">
+    <ul id="mode" class="nav nav-tabs">
       <li class="active"><a data-toggle="tab" href="#random">Random</a></li>
       <li><a data-toggle="tab" href="#preloaded">Preloaded</a></li>
     </ul>
@@ -97,9 +98,8 @@
         <center>
           <div class="col-md-12">
             <div class="btn-group">
-              <button type="button" id="playButton" class="btn btn-success"><i class="fa fa-play fa-fw"></i>Play</button>
-              <button type="button" class="btn btn-warning"><i class="fa fa-step-forward fa-fw"></i>Play step</button>
-              <button type="button" class="btn btn-danger"><i class="fa fa-stop fa-fw"></i>Stop</button>
+              <button type="button" id="samplingButton" class="btn btn-success"><i class="fa fa-play fa-fw"></i>Sampling</button>
+              <button type="button" class="btn btn-warning"><i class="fa fa-step-forward fa-fw"></i>Sampling step</button>
             </div>
             <hr>
             <button type="button" id="viterbiRandomButton"class="btn btn-primary btn-block"><i class="fa fa-magic fa-fw"></i>Run Viterbi algorithm</button>
@@ -124,7 +124,7 @@
           <div class="form-group">
             <label for="training">Training days:</label>
             <br>
-            <div id="slider-date" class="col-md-12">
+            <div id="training" class="col-md-12">
             </div>
             <br>
             <div id="event-start">
@@ -133,27 +133,6 @@
 
             </div>
           </div>
-        </div>
-
-        <div class="col-md-12">
-          <em>Observation: </em><strong><span class="configuration" style="letter-spacing: 2px;"></span></strong>
-          <br>
-          <br>
-        </div>
-
-        <div class="col-md-6">
-          <ul class="list-group">
-            {% for k,s in sensors_1.items() %}
-            <li class="list-group-item sensor{{k}}"><span>{{ s }}</span> <div class="led-red pull-right"></div></li>
-            {% endfor %}
-          </ul>
-        </div>
-        <div class="col-md-6">
-          <ul class="list-group">
-            {% for k,s in sensors_2.items() %}
-            <li class="list-group-item sensor{{k}}"><span>{{ s }}</span> <div class="led-red pull-right"></div></li>
-            {% endfor %}
-          </ul>
         </div>
         <hr>
         <center>

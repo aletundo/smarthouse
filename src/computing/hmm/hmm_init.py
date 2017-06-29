@@ -13,7 +13,7 @@ def create_start_matrix(n_states = None, dist = []):
         start_matrix = np.ones((n_states))
         start_matrix = start_matrix / n_states
 
-    print("\nStart matrix created! :)\n\n%s" % start_matrix)
+    #print("\nStart matrix created! :)\n\n%s" % start_matrix)
     return np.asmatrix(start_matrix)
 def calc_probabilities(row):
     sum = np.sum(row)
@@ -29,7 +29,7 @@ def create_trans_matrix(states_seq = [], n_states = None):
 
     trans_matrix = np.apply_along_axis( calc_probabilities, axis=1, arr=trans_matrix )
 
-    print("\nTransition matrix created! :)\n\n%s" % trans_matrix)
+    #print("\nTransition matrix created! :)\n\n%s" % trans_matrix)
     return np.matrix(trans_matrix)
 
 def create_em_matrix(states_seq = [], obs_seq = [], n_states = None, n_obs = None):
@@ -41,7 +41,7 @@ def create_em_matrix(states_seq = [], obs_seq = [], n_states = None, n_obs = Non
 
     em_matrix = np.apply_along_axis( calc_probabilities, axis=1, arr=em_matrix )
 
-    print("\nEmission matrix created! :)\n\n%s" % em_matrix)
+    #print("\nEmission matrix created! :)\n\n%s" % em_matrix)
     return np.matrix(em_matrix)
 
 def one_leave_out(dataset, day):
@@ -52,6 +52,15 @@ def one_leave_out(dataset, day):
     next_day = day + timedelta(days=1)
     test = cursor.execute('SELECT * FROM ' + dataset + ' WHERE timestamp BETWEEN ? AND ?', [day, next_day]).fetchall()
     train = cursor.execute('SELECT * FROM ' + dataset + ' WHERE timestamp < ? OR timestamp > ?', [day, next_day]).fetchall()
+    return test, train
+
+def split_dataset(dataset, start_day, end_day):
+    conn = db.get_conn()
+    conn.row_factory = sqlite3.Row
+    conn.text_factory = str
+    cursor = conn.cursor()
+    test = cursor.execute('SELECT * FROM ' + dataset + ' WHERE timestamp < ? OR timestamp > ?', [start_day, end_day]).fetchall()
+    train = cursor.execute('SELECT * FROM ' + dataset + ' WHERE timestamp BETWEEN ? AND ?', [start_day, end_day]).fetchall()
     return test, train
 
 def get_possibile_states(dataset):
@@ -70,7 +79,7 @@ def get_possibile_states(dataset):
         if s not in possible_states:
             possible_states[s] = label
             label += 1
-    print("\n%s possible states:\n%s\n" % (dataset, possible_states))
+    #print("\n%s possible states:\n%s\n" % (dataset, possible_states))
     return possible_states
 
 def get_possible_obs(dataset):
@@ -99,7 +108,7 @@ def get_possible_obs(dataset):
             possible_obs[key] = label
             label += 1
 
-    print("\n%s possible observations:\n%s\n" % (dataset, possible_obs))
+    #print("\n%s possible observations:\n%s\n" % (dataset, possible_obs))
 
     return possible_obs
 
@@ -121,7 +130,7 @@ def build_obs_sequence(observation_rows, possible_obs):
     obs_seq = np.array(obs_list)
     obs_vectors = np.array(obs_vectors)
 
-    print("\nObservations sequence:\n%s\n" % obs_vectors)
+    #print("\nObservations sequence:\n%s\n" % obs_vectors)
     return obs_seq, obs_vectors
 
 def build_states_sequence(state_rows, possible_states):
@@ -135,7 +144,7 @@ def build_states_sequence(state_rows, possible_states):
     states_value_seq = np.array(states_value_list)
     states_label_seq = np.array(states_label_list)
 
-    print("\nStates sequence:\n%s\n" % states_label_seq)
+    #print("\nStates sequence:\n%s\n" % states_label_seq)
     return states_value_seq, states_label_seq
 
 
