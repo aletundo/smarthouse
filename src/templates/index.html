@@ -3,48 +3,76 @@
 {% block container %}
 <div class="row row-eq-height">
   <div class="col-md-8">
-    <div class="row">
-      <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#piechart">States pie chart</a></li>
-        <li><a data-toggle="tab" href="#barchart">States bar chart</a></li>
-      </ul>
+    <div id="randomResults">
+      <div class="row">
+        <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#randomPieTab">States pie chart</a></li>
+          <li><a data-toggle="tab" href="#randomLineTab">States line chart</a></li>
+        </ul>
 
-      <div class="tab-content">
-        <div id="piechart" class="tab-pane fade in active">
-            <div class="row center-block" style="height:400px; width:400px">
-              <canvas id="randomPieChart"></canvas>
-            </div>
-        </div>
-        <div id="barchart" class="tab-pane fade">
-            <div>
-              <canvas id="randomBarChart"></canvas>
-            </div>
-        </div>
-      </div>
-    </div>
-    <br>
-    <div class="row">
-      <div class="col-md-6">
-        <div class="panel panel-default">
-          <!-- Default panel contents -->
-          <div class="panel-heading">Observations</div>
-          <!-- List group -->
-          <ul id="observationsRandomList" class="list-group">
-          </ul>
+        <div class="tab-content">
+          <div id="randomPieTab" class="tab-pane fade in active">
+              <div class="row center-block" style="height:400px; width:400px">
+                <canvas id="randomPieChart"></canvas>
+              </div>
+          </div>
+          <div id="randomLineTab" class="tab-pane fade">
+              <div>
+                <canvas id="randomLineChart"></canvas>
+              </div>
+          </div>
         </div>
       </div>
-      <div class="col-md-6">
+      <br>
+      <div class="row">
         <div class="col-md-6">
           <div class="panel panel-default">
             <!-- Default panel contents -->
-            <div class="panel-heading">States</div>
+            <div class="panel-heading">Observations</div>
             <!-- List group -->
-            <ul id="statesRandomList" class="list-group">
+            <ul id="observationsRandomList" class="list-group">
             </ul>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <!-- Default panel contents -->
+              <div class="panel-heading">States</div>
+              <!-- List group -->
+              <ul id="statesRandomList" class="list-group">
+              </ul>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
+
+
+    <div id="preloadedResults" style="display:none;">
+      <div class="row">
+        <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#preloadedPieTab">States pie chart</a></li>
+          <li><a data-toggle="tab" href="#preloadedRadarTab">States radar chart</a></li>
+        </ul>
+
+        <div class="tab-content">
+          <div id="preloadedPieTab" class="tab-pane fade in active">
+              <div class="row center-block" style="height:400px; width:400px">
+                <canvas id="preloadedPieChart"></canvas>
+              </div>
+          </div>
+          <div id="preloadedRadarTab" class="tab-pane fade">
+              <div>
+                <canvas id="preloadedRadarChart"></canvas>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
   </div>
   <div class="col-md-4">
     <ul id="mode" class="nav nav-tabs">

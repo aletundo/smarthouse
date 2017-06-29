@@ -69,19 +69,26 @@ var dynamicColors = function() {
   return "rgb(" + r + "," + g + "," + b + ")";
 }
 
+// Random mode dataset sensors config select event handler
 $('#sensors_config').change(function(){
   dataset = $(this).val();
   changeSensors(dataset);
 });
 
+// Random/Prealoaded mode tab event handler
 $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
   if (e.target.text === 'Random') {
     changeSensors($('#sensors_config').val());
-  }else {
+    $('#preloadedResults').hide();
+    $('#randomResults').show();
+  }else if(e.target.text === 'Preloaded'){
     changeSensors($('#dataset').val());
+    $('#randomResults').hide();
+    $('#preloadedResults').show();
   }
 });
 
+// Preloaded mode dataset select event handler
 $('#dataset').change(function(){
   dataset = $(this).val();
   changeSensors(dataset);

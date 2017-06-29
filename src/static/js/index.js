@@ -49,40 +49,7 @@ $(document).ready(function(){
       type: "POST",
       data: {dataset:dataset, observations: observations, mode: mode},
       success: function(result) {
-        for (s of result['viterbi_states_sequence']) {
-          $('#statesRandomList').append('<li class="list-group-item">' + s + '</li>');
-        }
-
-        var labels = [], datacounters = [], colors = [];
-
-        for (var c in result['counter']) {
-          datacounters.push(result['counter'][c]);
-          labels.push(c);
-          colors.push(dynamicColors());
-        }
-
-        var data = {
-          datasets: [{
-            data: datacounters,
-            backgroundColor: colors
-          }],
-          labels: labels,
-        };
-
-
-        var options = {
-          responsive: true,
-        };
-
-        var containerDiv = $('#randomPieChart').parent();
-        $('#randomPieChart').remove();
-        containerDiv.html('<canvas id="randomPieChart"><canvas>');
-        var ctx = document.getElementById("randomPieChart").getContext('2d');
-        var myLineChart = new Chart(ctx,{
-          type: 'doughnut',
-          data: data,
-          options: options
-        });
+        showRandomModeResult(dataset, result);
       },
       dataType: "json",
       timeout: 2000
@@ -111,27 +78,23 @@ $(document).ready(function(){
           colors.push(dynamicColors());
         }
 
-        var data = {
-          datasets: [{
-            data: datacounters,
-            backgroundColor: colors
-          }],
-          labels: labels,
-        };
-
-
-        var options = {
-          responsive: true,
-        };
-
         var containerDiv = $('#randomPieChart').parent();
         $('#randomPieChart').remove();
         containerDiv.html('<canvas id="randomPieChart"><canvas>');
         var ctx = document.getElementById("randomPieChart").getContext('2d');
-        var myLineChart = new Chart(ctx,{
+
+        new Chart(ctx,{
           type: 'doughnut',
-          data: data,
-          options: options
+          data: {
+            datasets: [{
+              data: datacounters,
+              backgroundColor: colors
+            }],
+            labels: labels,
+          },
+          options: {
+            responsive: true,
+          }
         });
       },
       dataType: "json",
@@ -139,4 +102,69 @@ $(document).ready(function(){
     });
   });
 
+  function showRandomModeResult(dataset, result){
+    var labels = [], datacounters = [], colors = [], points = [], i = 1;
+    for (s of result['viterbi_states_sequence']) {
+      $('#statesRandomList').append('<li class="list-group-item">' + s + '</li>');
+      points.push({x: i, y: s})
+      i++;
+    }
+    for (var c in result['counter']) {
+      datacounters.push(result['counter'][c]);
+      labels.push(c);
+      colors.push(dynamicColors());
+    }
+
+    var containerPie = $('#randomPieChart').parent();
+    $('#randomPieChart').remove();
+    containerPie.html('<canvas id="randomPieChart"><canvas>');
+    var ctxPie = document.getElementById("randomPieChart").getContext('2d');
+    new Chart(ctxPie,{
+      type: 'doughnut',
+      data: {
+        datasets: [{
+          data: datacounters,
+          backgroundColor: colors
+        }],
+        labels: labels,
+      },
+      options: {
+        responsive: true,
+      }
+    });
+
+    var containerLine = $('#randomLineChart').parent();
+    $('#randomLineChart').remove();
+    containerLine.html('<canvas id="randomLineChart"><canvas>');
+    var ctxLine = document.getElementById("randomLineChart").getContext('2d');
+
+    new Chart(ctxLine, {
+      type: 'line',
+      data: {
+        yLabels: labels,
+        datasets: [{
+          data: points,
+          label: dataset,
+          fill: false,
+          borderColor: "#3e95cd"
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          yAxes: [{
+            type: 'category'
+          }],
+          xAxes: [{
+            type: 'linear',
+            ticks: {
+              max: points.length,
+              min: 1,
+              stepSize: 1
+            }
+          }]
+        }
+      }
+    });
+  }
 });
