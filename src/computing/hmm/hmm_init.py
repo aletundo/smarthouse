@@ -1,3 +1,4 @@
+# coding=utf-8
 #!/usr/bin/python
 import argparse, sqlite3
 import numpy as np
@@ -15,6 +16,7 @@ def create_start_matrix(n_states = None, dist = []):
 
     #print("\nStart matrix created! :)\n\n%s" % start_matrix)
     return np.asmatrix(start_matrix)
+
 def calc_probabilities(row):
     sum = np.sum(row)
     return row / sum
@@ -63,7 +65,7 @@ def split_dataset(dataset, start_day, end_day):
     train = cursor.execute('SELECT * FROM ' + dataset + ' WHERE timestamp BETWEEN ? AND ?', [start_day, end_day]).fetchall()
     return test, train
 
-def get_possibile_states(dataset):
+def get_possible_states(dataset):
     conn = db.get_conn()
     conn.row_factory = sqlite3.Row
     conn.text_factory = str
@@ -146,6 +148,38 @@ def build_states_sequence(state_rows, possible_states):
 
     #print("\nStates sequence:\n%s\n" % states_label_seq)
     return states_value_seq, states_label_seq
+
+def build_possible_structures(dataset):
+    possible_obs = get_possible_obs(dataset + '_Sensors_Observation_Vectors')
+    possible_states = get_possible_states(dataset + '_ADLs_Activity_States')
+    possible_states_array = sorted(possible_states, key=possible_states.get)
+    possible_obs_array = sorted(possible_obs, key=possible_obs.get)
+
+    return possible_states, possible_states_array, possible_obs, possible_obs_array
+
+def build_sets(dataset, possible_states, possible_obs, start_day, end_day = None):
+    if end_day is None:
+        test_adls, train_adls = one_leave_out(dataset + '_ADLs_Activity_States', start_day)
+        test_sensors, train_sensors = one_leave_out(dataset + '_Sensors_Observation_Vectors', start_day)
+    else:
+        test_adls, train_adls = split_dataset(dataset + '_ADLs_Activity_States', start_day, end_day)
+        test_sensors, train_sensors = split_dataset(dataset + '_Sensors_Observation_Vectors', start_day, end_day)
+
+    train_states_value_seq, train_states_label_seq = build_states_sequence(train_adls, possible_states)
+    train_obs_seq, train_obs_vectors = build_obs_sequence(train_sensors, possible_obs)
+    test_states_value_seq, test_states_label_seq = build_states_sequence(test_adls, possible_states)
+    test_obs_seq, test_obs_vectors = build_obs_sequence(test_sensors, possible_obs)
+
+    return train_states_value_seq, train_states_label_seq, train_obs_seq, train_obs_vectors, test_states_value_seq, test_states_label_seq, test_obs_seq, test_obs_vectors
+
+def init_model(possible_states, possible_obs, possible_states_array, possible_obs_array, train_states_value_seq, train_obs_seq):
+    start_matrix = create_start_matrix(len(possible_states))
+    trans_matrix = create_trans_matrix(train_states_value_seq, len(possible_states))
+    em_matrix = create_em_matrix(train_states_value_seq, train_obs_seq, len(possible_states), len(possible_obs))
+
+    smarthouse_model = hmm(possible_states_array, possible_obs_array, start_matrix,trans_matrix,em_matrix)
+
+    return smarthouse_model
 
 
 if __name__ == "__main__":

@@ -44,30 +44,16 @@ def test_measures(correct_states, result_states, possible_states_array):
 
     return f_measure, labels_acc
 
+
 #Calculate performance of input dataset using one leave out technique
 def single_test(dataset, input_date):
+    possible_states, possible_states_array, possible_obs, possible_obs_array = hmm_init.build_possible_structures(dataset)
 
-    possible_obs = hmm_init.get_possible_obs(dataset + '_Sensors_Observation_Vectors')
-    possible_states = hmm_init.get_possibile_states(dataset + '_ADLs_Activity_States')
-    test_adls, train_adls = hmm_init.one_leave_out(dataset + '_ADLs_Activity_States', input_date)
-    test_sensors, train_sensors = hmm_init.one_leave_out(dataset + '_Sensors_Observation_Vectors', input_date)
+    train_states_value_seq, train_states_label_seq, train_obs_seq, train_obs_vectors, test_states_value_seq, test_states_label_seq, test_obs_seq, test_obs_vectors = hmm_init.build_sets(dataset, possible_states, possible_obs, input_date)
 
-    possible_states_array = sorted(possible_states, key=possible_states.get)
-    possible_obs_array = sorted(possible_obs, key=possible_obs.get)
+    model = hmm_init.init_model(possible_states, possible_obs, possible_states_array, possible_obs_array, train_states_value_seq, train_obs_seq)
 
-    train_states_value_seq, states_label_seq = hmm_init.build_states_sequence(train_adls, possible_states)
-    train_obs_seq, train_obs_vectors = hmm_init.build_obs_sequence(train_sensors, possible_obs)
-
-    start_matrix = hmm_init.create_start_matrix(len(possible_states))
-    trans_matrix = hmm_init.create_trans_matrix(train_states_value_seq, len(possible_states))
-    em_matrix = hmm_init.create_em_matrix(train_states_value_seq, train_obs_seq, len(possible_states), len(possible_obs))
-
-    smarthouse_model = hmm(possible_states_array, possible_obs_array, start_matrix,trans_matrix,em_matrix)
-
-    test_states_value_seq, test_states_label_seq = hmm_init.build_states_sequence(test_adls, possible_states)
-    test_obs_seq, test_obs_vectors = hmm_init.build_obs_sequence(test_sensors, possible_obs)
-
-    viterbi_states_sequence = smarthouse_model.viterbi(test_obs_vectors)
+    viterbi_states_sequence = model.viterbi(test_obs_vectors)
 
     fm_measure, label_acc = test_measures(test_states_label_seq, viterbi_states_sequence, possible_states_array)
 

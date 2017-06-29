@@ -70,6 +70,7 @@ $(document).ready(function(){
       type: "POST",
       data: {dataset:dataset, mode: mode, start_day: train_days[0], end_day: train_days[1]},
       success: function(result) {
+
         var labels = [], datacounters = [], colors = [];
 
         for (var c in result['counter']) {
@@ -78,10 +79,10 @@ $(document).ready(function(){
           colors.push(dynamicColors());
         }
 
-        var containerDiv = $('#randomPieChart').parent();
-        $('#randomPieChart').remove();
-        containerDiv.html('<canvas id="randomPieChart"><canvas>');
-        var ctx = document.getElementById("randomPieChart").getContext('2d');
+        var containerDiv = $('#preloadedPieChart').parent();
+        $('#preloadedPieChart').remove();
+        containerDiv.html('<canvas id="preloadedPieChart"><canvas>');
+        var ctx = document.getElementById("preloadedPieChart").getContext('2d');
 
         new Chart(ctx,{
           type: 'doughnut',
