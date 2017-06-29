@@ -2,13 +2,16 @@ $(document).ready(function(){
   var observations = [];
 
   $('#samplingButton').click(function(){
+    // Get parameters
     var samples = ($('#samples').val() !== '') ? parseInt($('#samples').val()) : 10;
     var rate = ($('#rate').val() !== '') ? parseInt($('#rate').val())*1000 : 5000;
     var dataset = $('#sensors_config').val();
 
+    // Clean all
     observations = [];
     $('#observationsRandomList').html('');
     $('#statesRandomList').html('');
+
     i = 1;
     (function poll() {
       $.ajax({
@@ -32,7 +35,7 @@ $(document).ready(function(){
           $('#observationsRandomList').append('<li class="list-group-item">' + configuration + '</li>');
         },
         dataType: "json",
-        complete: (i < (samples) ) ? setTimeout(function() {poll();}, rate) : '',
+        complete: (i < (samples) ) ? setTimeout(function() {poll();}, rate) : document.getElementById("viterbiRandomButton").disabled = false,
         timeout: 2000
       });
     })();
