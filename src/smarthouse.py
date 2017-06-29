@@ -114,8 +114,17 @@ size_b = labels_matrix_b.shape
 label_accuracy_mean_a = np.sum(labels_matrix_a, axis = 0)/size_a[0]
 label_accuracy_mean_b = np.sum(labels_matrix_b, axis = 0)/size_b[0]
 
-print ("\nLabels accuracy mean OrdonezA:\n%s\n" % label_accuracy_mean_a)
-print ("\nLabels accuracy mean OrdonezB:\n%s\n" % label_accuracy_mean_b)
+accuracy_final_list_a = []
+accuracy_final_list_b = []
+
+for l in range(len(labels_a)):
+    accuracy_final_list_a.append((labels_a[l], label_accuracy_mean_a[0, l]))
+
+for l in range(len(labels_b)):
+    accuracy_final_list_b.append((labels_b[l], label_accuracy_mean_b[0, l]))
+
+print ("\nLabels accuracy mean OrdonezA:\n%s\n" % accuracy_final_list_a)
+print ("\nLabels accuracy mean OrdonezB:\n%s\n" % accuracy_final_list_b)
 
 print ("\nFMeasure list dataset OrdonezA:\n%s\n" % fm_measure_list_a)
 print ("\nFMeasure mean dataset OrdonezA:\n%s\n" % fm_mean_a)
