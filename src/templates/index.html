@@ -6,8 +6,8 @@
     <div id="randomResults">
       <div class="row">
         <ul class="nav nav-tabs">
-          <li class="active"><a data-toggle="tab" href="#randomPieTab">States pie chart</a></li>
-          <li><a data-toggle="tab" href="#randomLineTab">States line chart</a></li>
+          <li class="active"><a data-toggle="tab" href="#randomPieTab">States doughnut chart</a></li>
+          <li><a data-toggle="tab" href="#randomLineTab">States sequence chart</a></li>
         </ul>
 
         <div class="tab-content">
@@ -53,8 +53,9 @@
     <div id="preloadedResults" style="display:none;">
       <div class="row">
         <ul class="nav nav-tabs">
-          <li class="active"><a data-toggle="tab" href="#preloadedPieTab">States pie chart</a></li>
-          <li><a data-toggle="tab" href="#preloadedRadarTab">States radar chart</a></li>
+          <li class="active"><a data-toggle="tab" href="#preloadedPieTab">States doughnut chart</a></li>
+          <li><a data-toggle="tab" href="#preloadedRadarTab">States accuracy chart</a></li>
+          <li><a data-toggle="tab" href="#preloadedLineTab">States sequence chart</a></li>
         </ul>
 
         <div class="tab-content">
@@ -65,7 +66,12 @@
           </div>
           <div id="preloadedRadarTab" class="tab-pane fade">
               <div>
-                <canvas id="preloadedRadarChart"></canvas>
+                <canvas id="preloadedRadarChart" style="height:300px; width:300px"></canvas>
+              </div>
+          </div>
+          <div id="preloadedLineTab" class="tab-pane fade">
+              <div>
+                <canvas id="preloadedLineChart" style="height:400px; width:400px"></canvas>
               </div>
           </div>
         </div>

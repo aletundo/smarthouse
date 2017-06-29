@@ -49,6 +49,8 @@ def viterbi():
     mode = request.form['mode']
     dataset = request.form['dataset']
     viterbi_states_sequence = []
+    result = dict()
+
     if mode == 'Random':
         observations = request.form.getlist('observations[]')
         if dataset == 'OrdonezA':
@@ -57,20 +59,24 @@ def viterbi():
             start_day = datetime.strptime(app.config['DATASET_B_START'], '%Y-%m-%d %H:%M:%S')
 
         viterbi_states_sequence = viterbi_random(dataset, observations, start_day)
+        counter = Counter(viterbi_states_sequence)
+        result['counter'] = dict(counter)
+        result['viterbi_states_sequence'] = viterbi_states_sequence
+
     elif mode == 'Preloaded':
         start_day = request.form['start_day']
         end_day = request.form['end_day']
         start_day = datetime.strptime(start_day, '%Y-%m-%d %H:%M:%S')
         end_day = datetime.strptime(end_day, '%Y-%m-%d %H:%M:%S')
 
-        viterbi_states_sequence, fm_measure, label_accuracy = viterbi_preloaded(dataset, start_day, end_day)
+        results = viterbi_preloaded(dataset, start_day, end_day)
+        counter = Counter(results[0])
+        result['counter'] = dict(counter)
+        result['viterbi_states_sequence'] = results[0]
+        result['fm_measure'] = results[1]
+        result['label_accuracy'] = results[2]
+        result['possible_states_array'] = results[3]
 
-    counter = Counter(viterbi_states_sequence)
-    result = dict()
-    result['counter'] = dict(counter)
-    result['viterbi_states_sequence'] = viterbi_states_sequence
-    result['fm_measure'] = fm_measure
-    result['label_accuracy'] = label_accuracy
     return jsonify(result)
 
 def get_sensors_conf_from_db(dataset):
@@ -93,7 +99,7 @@ def viterbi_preloaded(dataset, start_day, end_day):
 
     fm_measure, label_accuracy = hmm_performance.test_measures(test_states_label_seq, viterbi_states_sequence, possible_states_array)
 
-    return viterbi_states_sequence, fm_measure, label_accuracy
+    return (viterbi_states_sequence, fm_measure, label_accuracy, possible_states_array)
 
 def viterbi_random(dataset, observations, start_day):
     possible_obs = hmm_init.get_possible_obs(dataset + '_Sensors_Observation_Vectors')

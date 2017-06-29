@@ -70,8 +70,12 @@ $(document).ready(function(){
       type: "POST",
       data: {dataset:dataset, mode: mode, start_day: train_days[0], end_day: train_days[1]},
       success: function(result) {
+        var labels = [], datacounters = [], colors = [], points = [], i = 1;
 
-        var labels = [], datacounters = [], colors = [];
+        for (s of result['viterbi_states_sequence']) {
+          points.push({x: i, y: s})
+          i++;
+        }
 
         for (var c in result['counter']) {
           datacounters.push(result['counter'][c]);
@@ -89,7 +93,8 @@ $(document).ready(function(){
           data: {
             datasets: [{
               data: datacounters,
-              backgroundColor: colors
+              backgroundColor: colors,
+              label: dataset
             }],
             labels: labels,
           },
@@ -97,6 +102,75 @@ $(document).ready(function(){
             responsive: true,
           }
         });
+
+        var containerDiv = $('#preloadedRadarChart').parent();
+        $('#preloadedRadarChart').remove();
+        containerDiv.html('<canvas id="preloadedRadarChart"><canvas>');
+        var ctx = document.getElementById("preloadedRadarChart").getContext('2d');
+
+        new Chart(ctx, {
+          type: 'radar',
+          data: {
+            datasets: [{
+              data: result['label_accuracy'],
+              label: dataset,
+              borderColor: "rgb(116, 192, 241)",
+              backgroundColor: "rgba(116, 192, 241, 0.2)"
+            }],
+            labels: result['possible_states_array'],
+          },
+          options: {
+            responsive: true,
+            title: {
+              display: true,
+              text: 'States accuracy'
+            }
+          }
+        });
+
+        var containerLine = $('#preloadedLineChart').parent();
+        $('#preloadedLineChart').remove();
+        containerLine.html('<canvas id="preloadedLineChart"><canvas>');
+        var ctxLine = document.getElementById("preloadedLineChart").getContext('2d');
+
+        new Chart(ctxLine, {
+          type: 'line',
+          data: {
+            yLabels: labels,
+            datasets: [{
+              data: points,
+              label: dataset,
+              fill: false,
+              borderColor: "#3e95cd"
+            }]
+          },
+          options: {
+            elements: {
+              line: {
+                tension: 0,
+              }
+            },
+            title: {
+              display: true,
+              text: 'Most probable states sequence'
+            },
+            responsive: true,
+            scales: {
+              yAxes: [{
+                type: 'category'
+              }],
+              xAxes: [{
+                type: 'linear',
+                ticks: {
+                  max: points.length,
+                  min: 1,
+                  stepSize: 100
+                }
+              }]
+            }
+          }
+        });
+
       },
       dataType: "json",
       timeout: 50000
@@ -125,7 +199,8 @@ $(document).ready(function(){
       data: {
         datasets: [{
           data: datacounters,
-          backgroundColor: colors
+          backgroundColor: colors,
+          label: dataset
         }],
         labels: labels,
       },
@@ -151,6 +226,10 @@ $(document).ready(function(){
         }]
       },
       options: {
+        title: {
+          display: true,
+          text: 'Most probable states sequence'
+        },
         responsive: true,
         scales: {
           yAxes: [{
