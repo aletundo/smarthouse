@@ -42,7 +42,7 @@ def test_measures(correct_states, result_states, possible_states_array):
         else:
             labels_acc[i] = 1.0
 
-    return f_measure, labels_acc
+    return f_measure, labels_acc, precision, recall
 
 
 #Calculate performance of input dataset using one leave out technique
@@ -55,7 +55,7 @@ def single_test(dataset, input_date):
 
     viterbi_states_sequence = model.viterbi(test_obs_vectors)
 
-    fm_measure, label_acc = test_measures(test_states_label_seq, viterbi_states_sequence, possible_states_array)
+    fm_measure, label_acc, precision, recall = test_measures(test_states_label_seq, viterbi_states_sequence, possible_states_array)
 
     return fm_measure, label_acc, possible_states_array
 

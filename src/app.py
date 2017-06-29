@@ -73,9 +73,11 @@ def viterbi():
         counter = Counter(results[0])
         result['counter'] = dict(counter)
         result['viterbi_states_sequence'] = results[0]
-        result['fm_measure'] = results[1]
+        result['f_measure'] = results[1]
         result['label_accuracy'] = results[2]
-        result['possible_states_array'] = results[3]
+        result['precision'] = results[3]
+        result['recall'] = results[4]
+        result['possible_states_array'] = results[5]
 
     return jsonify(result)
 
@@ -97,9 +99,9 @@ def viterbi_preloaded(dataset, start_day, end_day):
 
     viterbi_states_sequence = model.viterbi(test_obs_vectors)
 
-    fm_measure, label_accuracy = hmm_performance.test_measures(test_states_label_seq, viterbi_states_sequence, possible_states_array)
+    fm_measure, label_accuracy, precision, recall = hmm_performance.test_measures(test_states_label_seq, viterbi_states_sequence, possible_states_array)
 
-    return (viterbi_states_sequence, fm_measure, label_accuracy, possible_states_array)
+    return (viterbi_states_sequence, fm_measure, label_accuracy, precision, recall, possible_states_array, )
 
 def viterbi_random(dataset, observations, start_day):
     possible_obs = hmm_init.get_possible_obs(dataset + '_Sensors_Observation_Vectors')

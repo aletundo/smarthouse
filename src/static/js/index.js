@@ -72,6 +72,10 @@ $(document).ready(function(){
       success: function(result) {
         var labels = [], datacounters = [], colors = [], points = [], i = 1;
 
+        $('#f_measure').html(result['f_measure']);
+        $('#precision').html(result['precision']);
+        $('#recall').html(result['recall']);
+        
         for (s of result['viterbi_states_sequence']) {
           points.push({x: i, y: s})
           i++;
