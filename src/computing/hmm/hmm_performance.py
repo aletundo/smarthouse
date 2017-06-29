@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import numpy as np
 from sklearn import metrics
-from utils import db
+from ..utils import db
 
 def viterbi_accuracy(viterbi_states_sequence, test_adls):
 
@@ -29,7 +29,19 @@ def test_measures(correct_states, result_states, possible_states_array):
     recall = metrics.recall_score(correct_states, result_states, average = 'macro')
     f_measure = metrics.f1_score(correct_states, result_states, average = 'macro')
 
-    print ("\nConfusion Matrix:\n%s\n" % conf_matrix)
-    print ("\nPrecision:\n%s\n" % precision)
-    print ("\nRecall:\n%s\n" % recall)
-    print ("\nFMeasure:\n%s\n" % f_measure)
+    #print ("\nConfusion Matrix:\n%s\n" % conf_matrix)
+    #print ("\nPrecision:\n%s\n" % precision)
+    #print ("\nRecall:\n%s\n" % recall)
+    #print ("\nFMeasure:\n%s\n" % f_measure)
+
+    rows_sum = np.sum(conf_matrix, axis = 1)
+    diag_el = np.diag(conf_matrix)
+    labels_acc = [None] * len(diag_el)
+
+    for i in range(len(rows_sum)):
+        if(rows_sum[i] != 0):
+            labels_acc[i] = (diag_el[i] * 1.0) / rows_sum[i]
+        else:
+            labels_acc[i] = 1.0
+
+    return f_measure, labels_acc
