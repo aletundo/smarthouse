@@ -22,6 +22,7 @@ def demo():
 @app.route('/performance', methods=['GET'])
 def performance():
     return render_template('performance.html')
+
 @app.route('/sensors_conf', methods=['GET'])
 def get_sensors_conf():
     dataset = request.args['dataset']

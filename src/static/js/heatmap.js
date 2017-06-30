@@ -8,7 +8,8 @@ function Matrix(options) {
   container = options.container,
   labelsData = options.labels,
   startColor = options.start_color,
-  endColor = options.end_color;
+  endColor = options.end_color,
+  legendDiv = options.legend;
 
   var widthLegend = 100;
 
@@ -125,7 +126,7 @@ function Matrix(options) {
   .attr("text-anchor", "end")
   .text(function(d, i) { return d; });
 
-  var key = d3.select("#preloadedHeatMapLegend")
+  var key = d3.select(legendDiv)
   .append("svg")
   .attr("width", widthLegend)
   .attr("height", height + margin.top + margin.bottom);

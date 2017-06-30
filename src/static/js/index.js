@@ -124,7 +124,7 @@ $(document).ready(function(){
             labels: result['possible_states_array'],
           },
           options: {
-            responsive: true,
+            responsive: false,
             title: {
               display: true,
               text: 'States accuracy'
@@ -183,7 +183,8 @@ $(document).ready(function(){
           data      : result['conf_matrix'],
           labels    : result['possible_states_array'],
           start_color : '#ffe6e6',
-          end_color : '#ff0000'
+          end_color : '#ff0000',
+          legend : '#preloadedHeatMapLegend'
         });
 
       },

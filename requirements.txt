@@ -3,3 +3,4 @@ pandas
 hidden_markov
 sklearn
 flask
+scipy

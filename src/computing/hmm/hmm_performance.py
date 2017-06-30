@@ -57,7 +57,7 @@ def single_test(dataset, input_date):
 
     f_measure, label_acc, precision, recall, conf_matrix = test_measures(test_states_label_seq, viterbi_states_sequence, possible_states_array)
 
-    return f_measure, label_acc, possible_states_array
+    return f_measure, precision, recall, label_acc, possible_states_array, conf_matrix
 
 #Calculate performance for each dataset and return average fm measure and labels accuracy
 def final_test():
@@ -74,31 +74,65 @@ def final_test():
     f_measure_list_a = []
     f_measure_list_b = []
 
+    precision_list_a = []
+    precision_list_b = []
+
+    recall_list_a = []
+    recall_list_b = []
+
     labels_acc_list_a = []
     labels_acc_list_b = []
+
+    conf_matrix_list_a = []
+    conf_matrix_list_b = []
 
     current_date_a = initial_date_a
     current_date_b = initial_date_b
 
     while(current_date_a <= last_date_a):
 
-        f_measure_a, labels_acc_a, labels_a = single_test(dataset_a, current_date_a)
-        f_measure_list_a.append(f_measure_a)
-        labels_acc_list_a.append(labels_acc_a)
+        f_measure_a, precision_a, recall_a, labels_acc_a, labels_a, conf_matrix_a = single_test(dataset_a, current_date_a)
 
+        f_measure_list_a.append(f_measure_a)
+        precision_list_a.append(precision_a)
+        recall_list_a.append(recall_a)
+        labels_acc_list_a.append(labels_acc_a)
+        conf_matrix_list_a.append(conf_matrix_a)
 
         current_date_a = current_date_a + timedelta(days = 1)
 
     while(current_date_b <= last_date_b):
 
-        f_measure_b, labels_acc_b, labels_b = single_test(dataset_b, current_date_b)
+        f_measure_b, precision_b, recall_b, labels_acc_b, labels_b, conf_matrix_b = single_test(dataset_b, current_date_b)
         f_measure_list_b.append(f_measure_b)
+        precision_list_b.append(precision_b)
+        recall_list_b.append(recall_b)
         labels_acc_list_b.append(labels_acc_b)
+        conf_matrix_list_b.append(conf_matrix_b)
 
         current_date_b = current_date_b + timedelta(days = 1)
 
     fm_mean_a = np.mean(f_measure_list_a)
     fm_mean_b = np.mean(f_measure_list_b)
+
+    precision_mean_a = np.mean(precision_list_a)
+    precision_mean_b = np.mean(precision_list_b)
+
+    recall_mean_a = np.mean(recall_list_a)
+    recall_mean_b = np.mean(recall_list_b)
+
+
+    for idx, m in enumerate(conf_matrix_list_a):
+        if idx == 0:
+            conf_matrices_a = m
+        else:
+            conf_matrices_a += m
+
+    for idx, m in enumerate(conf_matrix_list_b):
+        if idx == 0:
+            conf_matrix_b = m
+        else:
+            conf_matrix_b+= m
 
     fm_std_a = np.std(f_measure_list_a)
     fm_std_b = np.std(f_measure_list_b)
@@ -121,4 +155,4 @@ def final_test():
     for l in range(len(labels_b)):
         accuracy_final_list_b.append((labels_b[l], labels_accuracy_mean_b[0, l]))
 
-    return fm_mean_a, fm_mean_b, fm_std_a, fm_std_b, accuracy_final_list_a, accuracy_final_list_b
+    return fm_mean_a, fm_mean_b, fm_std_a, fm_std_b, precision_mean_a, precision_mean_b, recall_mean_a, recall_mean_b, accuracy_final_list_a, accuracy_final_list_b, conf_matrix_a, conf_matrix_b
