@@ -121,4 +121,4 @@ def final_test():
     for l in range(len(labels_b)):
         accuracy_final_list_b.append((labels_b[l], labels_accuracy_mean_b[0, l]))
 
-    return fm_mean_a, fm_mean_b, accuracy_final_list_a, accuracy_final_list_b
+    return fm_mean_a, fm_mean_b, fm_std_a, fm_std_b, accuracy_final_list_a, accuracy_final_list_b
