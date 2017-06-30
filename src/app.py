@@ -19,6 +19,9 @@ def demo():
     sensors = get_sensors_conf_from_db(app.config['DATASET'])
     return render_template('index.html', sensors_1 = dict(sensors.items()[:len(sensors)/2]), sensors_2 = dict(sensors.items()[len(sensors)/2:]))
 
+@app.route('/performance', methods=['GET'])
+def performance():
+    return render_template('performance.html')
 @app.route('/sensors_conf', methods=['GET'])
 def get_sensors_conf():
     dataset = request.args['dataset']
@@ -77,7 +80,8 @@ def viterbi():
         result['labels_accuracy'] = results[2]
         result['precision'] = results[3]
         result['recall'] = results[4]
-        result['possible_states_array'] = results[5]
+        result['conf_matrix'] = results[5].tolist()
+        result['possible_states_array'] = results[6]
 
     return jsonify(result)
 
@@ -99,9 +103,9 @@ def viterbi_preloaded(dataset, start_day, end_day):
 
     viterbi_states_sequence = model.viterbi(test_obs_vectors)
 
-    f_measure, labels_accuracy, precision, recall = hmm_performance.test_measures(test_states_label_seq, viterbi_states_sequence, possible_states_array)
+    f_measure, labels_accuracy, precision, recall, conf_matrix = hmm_performance.test_measures(test_states_label_seq, viterbi_states_sequence, possible_states_array)
 
-    return (viterbi_states_sequence, f_measure, labels_accuracy, precision, recall, possible_states_array, )
+    return (viterbi_states_sequence, f_measure, labels_accuracy, precision, recall, conf_matrix, possible_states_array)
 
 def viterbi_random(dataset, observations, start_day):
     possible_obs = hmm_init.get_possible_obs(dataset + '_Sensors_Observation_Vectors')

@@ -76,23 +76,29 @@
             </div>
           </div>
           <div id="preloadedPerformanceTab" class="tab-pane fade">
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>F-measure</th>
-                    <th>Precision</th>
-                    <th>Recall</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td id="f_measure"></td>
-                    <td id="precision"></td>
-                    <td id="recall"></td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="row center-block">
+              <div style="display:inline-block;" id="preloadedHeatMap"></div>
+              <div style="display:inline-block;" id="preloadedHeatMapLegend"></div>
+            </div>
+            <div class="row">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>F-measure</th>
+                      <th>Precision</th>
+                      <th>Recall</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td id="f_measure"></td>
+                      <td id="precision"></td>
+                      <td id="recall"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -201,4 +207,11 @@
     </div>
   </div>
 </div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/nouislider.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+<script src="{{ url_for('static', filename='js/training-slider.js') }}"></script>
+<script src="{{ url_for('static', filename='js/heatmap.js') }}"></script>
 {% endblock %}

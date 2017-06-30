@@ -56,10 +56,10 @@
             <a href="/"><i class="fa fa-gamepad fa-fw" aria-hidden="true"></i></i>Demo</a>
           </li>
           <li>
-            <a href="/"><i class="fa fa-line-chart fa-fw" aria-hidden="true"></i>Perfomance</a>
+            <a href="/performance"><i class="fa fa-line-chart fa-fw" aria-hidden="true"></i>Perfomance</a>
           </li>
           <li>
-            <a href="/"><i class="fa fa-info fa-fw" aria-hidden="true"></i>About</a>
+            <a href="/about"><i class="fa fa-info fa-fw" aria-hidden="true"></i>About</a>
           </li>
         </ul>
       </div>
@@ -90,11 +90,13 @@
   <!-- Bootstrap Core JavaScript -->
   <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
+  <!-- Charts libraries -->
   <script src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/nouislider.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/index.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/training-slider.js') }}"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+
+  {% block scipts %}
+  {% endblock %}
+
 </body>
 
 </html>

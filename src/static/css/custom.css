@@ -21,3 +21,17 @@
 .noUi-connect	{
   background: #337ab7;
 }
+
+.axis text {
+    font: 10px sans-serif;
+}
+
+.axis line, .axis path {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+#dataView{
+  margin-top:50px;
+}

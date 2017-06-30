@@ -75,7 +75,7 @@ $(document).ready(function(){
         $('#f_measure').html(result['f_measure']);
         $('#precision').html(result['precision']);
         $('#recall').html(result['recall']);
-        
+        console.log(result['conf_matrix']);
         for (s of result['viterbi_states_sequence']) {
           points.push({x: i, y: s})
           i++;
@@ -173,6 +173,17 @@ $(document).ready(function(){
               }]
             }
           }
+        });
+
+        $('#preloadedHeatMap').html('');
+        $('#preloadedHeatMapLegend').html('');
+
+        Matrix({
+          container : '#preloadedHeatMap',
+          data      : result['conf_matrix'],
+          labels    : result['possible_states_array'],
+          start_color : '#ffe6e6',
+          end_color : '#ff0000'
         });
 
       },
