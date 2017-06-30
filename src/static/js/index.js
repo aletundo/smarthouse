@@ -116,7 +116,7 @@ $(document).ready(function(){
           type: 'radar',
           data: {
             datasets: [{
-              data: result['label_accuracy'],
+              data: result['labels_accuracy'],
               label: dataset,
               borderColor: "rgb(116, 192, 241)",
               backgroundColor: "rgba(116, 192, 241, 0.2)"

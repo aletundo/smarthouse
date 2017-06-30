@@ -55,9 +55,9 @@ def single_test(dataset, input_date):
 
     viterbi_states_sequence = model.viterbi(test_obs_vectors)
 
-    fm_measure, label_acc, precision, recall = test_measures(test_states_label_seq, viterbi_states_sequence, possible_states_array)
+    f_measure, label_acc, precision, recall = test_measures(test_states_label_seq, viterbi_states_sequence, possible_states_array)
 
-    return fm_measure, label_acc, possible_states_array
+    return f_measure, label_acc, possible_states_array
 
 #Calculate performance for each dataset and return average fm measure and labels accuracy
 def final_test():
@@ -71,8 +71,8 @@ def final_test():
     dataset_a = 'OrdonezA'
     dataset_b = 'OrdonezB'
 
-    fm_measure_list_a = []
-    fm_measure_list_b = []
+    f_measure_list_a = []
+    f_measure_list_b = []
 
     labels_acc_list_a = []
     labels_acc_list_b = []
@@ -82,8 +82,8 @@ def final_test():
 
     while(current_date_a <= last_date_a):
 
-        fm_measure_a, labels_acc_a, labels_a = single_test(dataset_a, current_date_a)
-        fm_measure_list_a.append(fm_measure_a)
+        f_measure_a, labels_acc_a, labels_a = single_test(dataset_a, current_date_a)
+        f_measure_list_a.append(f_measure_a)
         labels_acc_list_a.append(labels_acc_a)
 
 
@@ -91,14 +91,17 @@ def final_test():
 
     while(current_date_b <= last_date_b):
 
-        fm_measure_b, labels_acc_b, labels_b = single_test(dataset_b, current_date_b)
-        fm_measure_list_b.append(fm_measure_b)
+        f_measure_b, labels_acc_b, labels_b = single_test(dataset_b, current_date_b)
+        f_measure_list_b.append(f_measure_b)
         labels_acc_list_b.append(labels_acc_b)
 
         current_date_b = current_date_b + timedelta(days = 1)
 
-    fm_mean_a = sum(fm_measure_list_a) / len(fm_measure_list_a)
-    fm_mean_b = sum(fm_measure_list_b) / len(fm_measure_list_b)
+    fm_mean_a = np.mean(f_measure_list_a)
+    fm_mean_b = np.mean(f_measure_list_b)
+
+    fm_std_a = np.std(f_measure_list_a)
+    fm_std_b = np.std(f_measure_list_b)
 
     labels_matrix_a = np.matrix(labels_acc_list_a)
     labels_matrix_b = np.matrix(labels_acc_list_b)
@@ -106,16 +109,16 @@ def final_test():
     size_a = labels_matrix_a.shape
     size_b = labels_matrix_b.shape
 
-    label_accuracy_mean_a = np.sum(labels_matrix_a, axis = 0)/size_a[0]
-    label_accuracy_mean_b = np.sum(labels_matrix_b, axis = 0)/size_b[0]
+    labels_accuracy_mean_a = np.sum(labels_matrix_a, axis = 0)/size_a[0]
+    labels_accuracy_mean_b = np.sum(labels_matrix_b, axis = 0)/size_b[0]
 
     accuracy_final_list_a = []
     accuracy_final_list_b = []
 
     for l in range(len(labels_a)):
-        accuracy_final_list_a.append((labels_a[l], label_accuracy_mean_a[0, l]))
+        accuracy_final_list_a.append((labels_a[l], labels_accuracy_mean_a[0, l]))
 
     for l in range(len(labels_b)):
-        accuracy_final_list_b.append((labels_b[l], label_accuracy_mean_b[0, l]))
+        accuracy_final_list_b.append((labels_b[l], labels_accuracy_mean_b[0, l]))
 
     return fm_mean_a, fm_mean_b, accuracy_final_list_a, accuracy_final_list_b
