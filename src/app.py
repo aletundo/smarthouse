@@ -90,6 +90,21 @@ def viterbi():
 
     return jsonify(result)
 
+@app.route('/forward', methods=['POST'])
+def forward():
+    dataset = request.form['dataset']
+    observations = request.form.getlist('observations[]')
+    if dataset == 'OrdonezA':
+        start_day = datetime.strptime(app.config['DATASET_A_START'], '%Y-%m-%d %H:%M:%S')
+    else:
+        start_day = datetime.strptime(app.config['DATASET_B_START'], '%Y-%m-%d %H:%M:%S')
+
+    possible_states, possible_states_array, possible_obs, possible_obs_array = hmm_init.build_possible_structures(dataset)
+    train_states_value_seq, _, train_obs_seq, _, _, _, _, _ = hmm_init.build_sets('one_leave_out', dataset, possible_states, possible_obs, start_day)
+    model = hmm_init.init_model(possible_states, possible_obs, possible_states_array, possible_obs_array, train_states_value_seq, train_obs_seq)
+
+    return jsonify(model.forward_algo(observations))
+
 def get_sensors_conf_from_db(dataset):
     conn = db.get_conn()
     conn.text_factory = str

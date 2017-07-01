@@ -25,6 +25,12 @@
       </div>
       <br>
       <div class="row">
+        <div class="col-md-12">
+          <div id="forwardAlert" class="alert alert-info alert-dismissible" role="alert" style="display:none;">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Probability of the observations sequence:</strong> <em><span id="forwardResult"></span></em>
+          </div>
+        </div>
         <div class="col-md-6">
           <div class="panel panel-default">
             <!-- Default panel contents -->
@@ -130,14 +136,17 @@
         <div class="form-group col-md-6">
           <label for="rate">Sampling rate:</label>
           <input type="text" class="form-control" id="rate" placeholder="Rate in seconds" value="">
+          <p class="help-block">Default: 3</p>
         </div>
 
         <div class="form-group col-md-6">
           <label for="samples">Observations:</label>
           <input type="text" class="form-control" id="samples" placeholder="Number of samples" value="">
+          <p class="help-block">Default: 10</p>
         </div>
 
         <div class="col-md-12">
+          <hr>
           <em>Observation: </em><strong><span class="configuration" style="letter-spacing: 2px;"></span></strong>
           <br>
           <br>
@@ -157,12 +166,15 @@
             {% endfor %}
           </ul>
         </div>
-        <hr>
         <center>
           <div class="col-md-12">
+            <button type="button" id="samplingButton" class="btn btn-success btn-block"><i class="fa fa-random fa-fw"></i>Random sampling</button>
+          </div>
+          <div class="col-md-12">
+            <hr>
             <div class="btn-group">
-              <button type="button" id="samplingButton" class="btn btn-success"><i class="fa fa-play fa-fw"></i>Sampling</button>
-              <button type="button" id="viterbiRandomButton"class="btn btn-primary" disabled><i class="fa fa-magic fa-fw"></i>Run Viterbi algorithm</button>
+              <button type="button" id="viterbiRandomButton"class="btn btn-primary" disabled><i class="fa fa-magic fa-fw"></i>Viterbi algorithm</button>
+              <button type="button" id="forwardButton"class="btn btn-warning" disabled><i class="fa fa-forward fa-fw"></i>Forward algorithm</button>
             </div>
           </div>
         </center>
@@ -199,7 +211,7 @@
         <center>
           <div class="col-md-12">
             <hr>
-            <button type="button" id="viterbiPreloadedButton" class="btn btn-primary btn-block"><i class="fa fa-magic fa-fw"></i>Run Viterbi algorithm</button>
+            <button type="button" id="viterbiPreloadedButton" class="btn btn-primary btn-block"><i class="fa fa-magic fa-fw"></i>Viterbi algorithm</button>
           </div>
         </center>
       </div>

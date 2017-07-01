@@ -4,13 +4,14 @@ $(document).ready(function(){
   $('#samplingButton').click(function(){
     // Get parameters
     var samples = ($('#samples').val() !== '') ? parseInt($('#samples').val()) : 10;
-    var rate = ($('#rate').val() !== '') ? parseInt($('#rate').val())*1000 : 5000;
+    var rate = ($('#rate').val() !== '') ? parseInt($('#rate').val())*1000 : 3000;
     var dataset = $('#sensors_config').val();
 
     // Clean all
     observations = [];
     $('#observationsRandomList').html('');
     $('#statesRandomList').html('');
+    $('#forwardAlert').hide();
 
     i = 1;
     (function poll() {
@@ -35,7 +36,12 @@ $(document).ready(function(){
           $('#observationsRandomList').append('<li class="list-group-item">' + configuration + '</li>');
         },
         dataType: "json",
-        complete: (i < (samples) ) ? setTimeout(function() {poll();}, rate) : document.getElementById("viterbiRandomButton").disabled = false,
+        complete: function(){if(i <= samples){
+          setTimeout(function() {poll();}, rate);
+        }else {
+          document.getElementById("viterbiRandomButton").disabled = false;
+          document.getElementById("forwardButton").disabled = false;
+        }},
         timeout: 2000
       });
     })();
@@ -50,6 +56,22 @@ $(document).ready(function(){
       data: {dataset:dataset, observations: observations, mode: mode},
       success: function(result) {
         showRandomModeResult(dataset, result);
+      },
+      dataType: "json",
+      timeout: 2000
+    });
+  });
+
+  $('#forwardButton').click(function(){
+    var dataset = $('#sensors_config').val();
+
+    $.ajax({
+      url: "/forward",
+      type: "POST",
+      data: {dataset:dataset, observations: observations},
+      success: function(result) {
+        $('#forwardResult').html(result);
+        $('#forwardAlert').show();
       },
       dataType: "json",
       timeout: 2000
