@@ -6,25 +6,6 @@ from hidden_markov import hmm
 from datetime import datetime, timedelta
 from ..utils import db
 
-def viterbi_accuracy(viterbi_states_sequence, test_adls):
-
-    conn = db.get_conn()
-    cursor = conn.cursor()
-
-    cont = 0
-    correct = 0
-    num_correct_states = 0.0
-
-    for row in test_adls:
-        if(row[1] == viterbi_states_sequence[cont]):
-            num_correct_states = num_correct_states + 1
-            correct = correct + 1
-        cont = cont + 1
-
-    accuracy = num_correct_states / len(test_adls)
-
-    return accuracy, len(test_adls)
-
 def test_measures(correct_states, result_states, possible_states_array):
 
     conf_matrix = metrics.confusion_matrix(correct_states, result_states, labels = possible_states_array)
@@ -49,7 +30,7 @@ def test_measures(correct_states, result_states, possible_states_array):
 def single_test(dataset, input_date):
     possible_states, possible_states_array, possible_obs, possible_obs_array = hmm_init.build_possible_structures(dataset)
 
-    train_states_value_seq, train_states_label_seq, train_obs_seq, train_obs_vectors, test_states_value_seq, test_states_label_seq, test_obs_seq, test_obs_vectors = hmm_init.build_sets(dataset, possible_states, possible_obs, input_date)
+    train_states_value_seq, train_states_label_seq, train_obs_seq, train_obs_vectors, test_states_value_seq, test_states_label_seq, test_obs_seq, test_obs_vectors = hmm_init.build_sets('one_leave_out', dataset, possible_states, possible_obs, input_date)
 
     model = hmm_init.init_model(possible_states, possible_obs, possible_states_array, possible_obs_array, train_states_value_seq, train_obs_seq)
 
@@ -58,6 +39,29 @@ def single_test(dataset, input_date):
     f_measure, label_acc, precision, recall, conf_matrix = test_measures(test_states_label_seq, viterbi_states_sequence, possible_states_array)
 
     return f_measure, precision, recall, label_acc, possible_states_array, conf_matrix
+
+# Calculate the learning curve incrementing the training set
+def learning_curve(dataset, start_day, end_day):
+    start_day_train = start_day
+    end_day_train = start_day + timedelta(days=1)
+    f_measure_list = []
+
+    while end_day_train < end_day:
+        possible_states, possible_states_array, possible_obs, possible_obs_array = hmm_init.build_possible_structures(dataset)
+
+        train_states_value_seq, train_states_label_seq, train_obs_seq, train_obs_vectors, test_states_value_seq, test_states_label_seq, test_obs_seq, test_obs_vectors = hmm_init.build_sets('learning_curve', dataset, possible_states, possible_obs, start_day_train, end_day_train, end_day)
+
+        model = hmm_init.init_model(possible_states, possible_obs, possible_states_array, possible_obs_array, train_states_value_seq, train_obs_seq)
+
+        viterbi_states_sequence = model.viterbi(test_obs_vectors)
+        # Get only the f_measure returned value
+        f_measure = test_measures(test_states_label_seq, viterbi_states_sequence, possible_states_array)[0]
+        f_measure_list.append(f_measure)
+
+        start_day_train = end_day_train
+        end_day_train = end_day_train + timedelta(days=1)
+
+    return f_measure_list
 
 #Calculate performance for each dataset and return average fm measure and labels accuracy
 def final_test():
@@ -124,9 +128,9 @@ def final_test():
 
     for idx, m in enumerate(conf_matrix_list_a):
         if idx == 0:
-            conf_matrices_a = m
+            conf_matrix_a = m
         else:
-            conf_matrices_a += m
+            conf_matrix_a += m
 
     for idx, m in enumerate(conf_matrix_list_b):
         if idx == 0:

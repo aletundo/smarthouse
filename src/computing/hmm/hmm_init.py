@@ -46,7 +46,7 @@ def create_em_matrix(states_seq = [], obs_seq = [], n_states = None, n_obs = Non
     #print("\nEmission matrix created! :)\n\n%s" % em_matrix)
     return np.matrix(em_matrix)
 
-def one_leave_out(dataset, day):
+def one_leave_out_train(dataset, day):
     conn = db.get_conn()
     conn.row_factory = sqlite3.Row
     conn.text_factory = str
@@ -56,12 +56,21 @@ def one_leave_out(dataset, day):
     train = cursor.execute('SELECT * FROM ' + dataset + ' WHERE timestamp < ? OR timestamp > ?', [day, next_day]).fetchall()
     return test, train
 
-def split_dataset(dataset, start_day, end_day):
+def demo_train(dataset, start_day, end_day):
     conn = db.get_conn()
     conn.row_factory = sqlite3.Row
     conn.text_factory = str
     cursor = conn.cursor()
     test = cursor.execute('SELECT * FROM ' + dataset + ' WHERE timestamp < ? OR timestamp > ?', [start_day, end_day]).fetchall()
+    train = cursor.execute('SELECT * FROM ' + dataset + ' WHERE timestamp BETWEEN ? AND ?', [start_day, end_day]).fetchall()
+    return test, train
+
+def learning_curve_train(dataset, start_day, end_day, test_day):
+    conn = db.get_conn()
+    conn.row_factory = sqlite3.Row
+    conn.text_factory = str
+    cursor = conn.cursor()
+    test = cursor.execute('SELECT * FROM ' + dataset + ' WHERE timestamp >= ?', [test_day]).fetchall()
     train = cursor.execute('SELECT * FROM ' + dataset + ' WHERE timestamp BETWEEN ? AND ?', [start_day, end_day]).fetchall()
     return test, train
 
@@ -157,13 +166,16 @@ def build_possible_structures(dataset):
 
     return possible_states, possible_states_array, possible_obs, possible_obs_array
 
-def build_sets(dataset, possible_states, possible_obs, start_day, end_day = None):
-    if end_day is None:
-        test_adls, train_adls = one_leave_out(dataset + '_ADLs_Activity_States', start_day)
-        test_sensors, train_sensors = one_leave_out(dataset + '_Sensors_Observation_Vectors', start_day)
-    else:
-        test_adls, train_adls = split_dataset(dataset + '_ADLs_Activity_States', start_day, end_day)
-        test_sensors, train_sensors = split_dataset(dataset + '_Sensors_Observation_Vectors', start_day, end_day)
+def build_sets(mode, dataset, possible_states, possible_obs, start_day, end_day = None, test_day = None):
+    if mode == 'one_leave_out':
+        test_adls, train_adls = one_leave_out_train(dataset + '_ADLs_Activity_States', start_day)
+        test_sensors, train_sensors = one_leave_out_train(dataset + '_Sensors_Observation_Vectors', start_day)
+    elif mode == 'demo':
+        test_adls, train_adls = demo_train(dataset + '_ADLs_Activity_States', start_day, end_day)
+        test_sensors, train_sensors = demo_train(dataset + '_Sensors_Observation_Vectors', start_day, end_day)
+    elif mode == 'learning_curve':
+        test_adls, train_adls = learning_curve_train(dataset + '_ADLs_Activity_States', start_day, end_day, test_day)
+        test_sensors, train_sensors = learning_curve_train(dataset + '_Sensors_Observation_Vectors', start_day, end_day, test_day)
 
     train_states_value_seq, train_states_label_seq = build_states_sequence(train_adls, possible_states)
     train_obs_seq, train_obs_vectors = build_obs_sequence(train_sensors, possible_obs)

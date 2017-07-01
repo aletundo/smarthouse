@@ -98,7 +98,7 @@ def get_sensors_conf_from_db(dataset):
 def viterbi_preloaded(dataset, start_day, end_day):
     possible_states, possible_states_array, possible_obs, possible_obs_array = hmm_init.build_possible_structures(dataset)
 
-    train_states_value_seq, train_states_label_seq, train_obs_seq, train_obs_vectors, test_states_value_seq, test_states_label_seq, test_obs_seq, test_obs_vectors = hmm_init.build_sets(dataset, possible_states, possible_obs, start_day, end_day)
+    train_states_value_seq, train_states_label_seq, train_obs_seq, train_obs_vectors, test_states_value_seq, test_states_label_seq, test_obs_seq, test_obs_vectors = hmm_init.build_sets('demo', dataset, possible_states, possible_obs, start_day, end_day)
 
     model = hmm_init.init_model(possible_states, possible_obs, possible_states_array, possible_obs_array, train_states_value_seq, train_obs_seq)
 
@@ -109,25 +109,13 @@ def viterbi_preloaded(dataset, start_day, end_day):
     return (viterbi_states_sequence, f_measure, labels_accuracy, precision, recall, conf_matrix, possible_states_array)
 
 def viterbi_random(dataset, observations, start_day):
-    possible_obs = hmm_init.get_possible_obs(dataset + '_Sensors_Observation_Vectors')
-    possible_states = hmm_init.get_possible_states(dataset + '_ADLs_Activity_States')
+    possible_states, possible_states_array, possible_obs, possible_obs_array = hmm_init.build_possible_structures(dataset)
 
-    test_adls, train_adls = hmm_init.one_leave_out(dataset + '_ADLs_Activity_States', start_day)
-    test_sensors, train_sensors = hmm_init.one_leave_out(dataset + '_Sensors_Observation_Vectors', start_day)
+    train_states_value_seq, train_states_label_seq, train_obs_seq, train_obs_vectors, test_states_value_seq, test_states_label_seq, test_obs_seq, test_obs_vectors = hmm_init.build_sets('one_leave_out', dataset, possible_states, possible_obs, start_day)
 
-    possible_states_array = sorted(possible_states, key=possible_states.get)
-    possible_obs_array = sorted(possible_obs, key=possible_obs.get)
+    model = hmm_init.init_model(possible_states, possible_obs, possible_states_array, possible_obs_array, train_states_value_seq, train_obs_seq)
 
-    train_states_value_seq, states_label_seq = hmm_init.build_states_sequence(train_adls, possible_states)
-    train_obs_seq, train_obs_vectors = hmm_init.build_obs_sequence(train_sensors, possible_obs)
-
-    start_matrix = hmm_init.create_start_matrix(len(possible_states))
-    trans_matrix = hmm_init.create_trans_matrix(train_states_value_seq, len(possible_states))
-    em_matrix = hmm_init.create_em_matrix(train_states_value_seq, train_obs_seq, len(possible_states), len(possible_obs))
-
-    smarthouse_model = hmm(possible_states_array, possible_obs_array, start_matrix,trans_matrix,em_matrix)
-
-    return smarthouse_model.viterbi(observations)
+    return model.viterbi(test_obs_vectors)
 
 if __name__ == '__main__':
     app.run()

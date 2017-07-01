@@ -32,3 +32,6 @@ print ("\nFMeasure std dataset OrdonezA:\n%s\n" % fm_std_a)
 
 print ("\nFMeasure mean dataset OrdonezB:\n%s\n" % fm_mean_b)
 print ("\nFMeasure std dataset OrdonezB:\n%s\n" % fm_std_b)
+
+print hmm_performance.learning_curve('OrdonezA', datetime(2011, 11, 28, 0, 0, 0), datetime(2011, 12, 11, 0, 0, 0))
+print hmm_performance.learning_curve('OrdonezB', datetime(2012, 11, 12, 0, 0, 0), datetime(2012, 12, 02, 0, 0, 0))
