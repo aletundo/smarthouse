@@ -84,4 +84,49 @@ $(document).ready(function(){
       showlegend: true
     };
     Plotly.newPlot("fmeasureChart", data, layout, {displayModeBar: false});
+
+
+    var ctxLine = document.getElementById("learningCurveChartA").getContext('2d');
+
+    new Chart(ctxLine, {
+      type: 'line',
+      data: {
+        datasets: [{
+          data: [0.77964216588095503, 0.72055856715188071, 0.66604938271604941, 0.57786922294296372, 0.6651785714285714, 0.85042851408016906, 0.81912462190526325, 0.62550875050875043, 0.69880952380952377, 0.8738047949722727, 0.62830951455052175, 0.82607551807632917, 0.77730573710965867],
+          label: 'OrdonezA',
+          fill: false,
+          borderColor: "#3e95cd"
+        }],
+        labels : ['1 day', '2 days', '3 days','4 days', '5 days', '6 days', '7 days', '8 days', '9 days', '10 days', '11 days', '12 days', '13 days']
+      },
+      options: {
+        title: {
+          display: true,
+          text: 'Learning curve Ordonez A'
+        },
+        responsive: false
+      }
+    });
+
+    ctxLine = document.getElementById("learningCurveChartB").getContext('2d');
+
+    new Chart(ctxLine, {
+      type: 'line',
+      data: {
+        datasets: [{
+          data: [0.52257532061536915, 0.44031349485894078, 0.48602399845155692, 0.38666519446453645, 0.44126874655908943, 0.54074247198039482, 0.48875435228028796, 0.4989369261053036, 0.64185905572746094, 0.64907918593651526, 0.49416265116440522, 0.48499937598141601, 0.50203785854438654, 0.62291075962784559, 0.55022151878550452, 0.60627448156725783, 0.61537871050827031, 0.57881662254636312, 0.28468859157413928, 0.53053682981604533],
+          label: 'OrdonezB',
+          fill: false,
+          borderColor: "#ff0000"
+        }],
+        labels : ['1 day', '2 days', '3 days','4 days', '5 days', '6 days', '7 days', '8 days', '9 days', '10 days', '11 days', '12 days', '13 days', '14 days',  '15 days', '16 days','17 days','18 days','19 days','20 days']
+      },
+      options: {
+        title: {
+          display: true,
+          text: 'Learning curve Ordonez B'
+        },
+        responsive: false
+      }
+    });
   });

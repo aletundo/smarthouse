@@ -46,7 +46,7 @@ def learning_curve(dataset, start_day, end_day):
     end_day_train = start_day + timedelta(days=1)
     f_measure_list = []
 
-    while end_day_train < end_day:
+    while end_day_train <= end_day:
         possible_states, possible_states_array, possible_obs, possible_obs_array = hmm_init.build_possible_structures(dataset)
 
         train_states_value_seq, train_states_label_seq, train_obs_seq, train_obs_vectors, test_states_value_seq, test_states_label_seq, test_obs_seq, test_obs_vectors = hmm_init.build_sets('learning_curve', dataset, possible_states, possible_obs, start_day_train, end_day_train, end_day)

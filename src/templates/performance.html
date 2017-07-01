@@ -9,6 +9,7 @@
         <li class="active"><a data-toggle="tab" href="#confusionMatricesTab">Confusion matrices heatmap</a></li>
         <li><a data-toggle="tab" href="#fmeasureTab">F-Measure bar chart</a></li>
         <li><a data-toggle="tab" href="#accuracyTab">Accuracy radar chart</a></li>
+        <li><a data-toggle="tab" href="#learningCurveTab">Learning curve line chart</a></li>
       </ul>
 
       <div class="tab-content">
@@ -30,6 +31,14 @@
           <div class="row">
             <center>
               <canvas id="accuracyChart" style="height:400px; width:400px"></canvas>
+            </center>
+          </div>
+        </div>
+        <div id="learningCurveTab" class="tab-pane fade">
+          <div class="row">
+            <center>
+              <canvas id="learningCurveChartA" style="height:400px; width:550px; display:inline-block; margin-right: 10px;"></canvas>
+              <canvas id="learningCurveChartB" style="height:400px; width:550px; display:inline-block;"></canvas>
             </center>
           </div>
         </div>
