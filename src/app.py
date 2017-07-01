@@ -115,7 +115,7 @@ def viterbi_random(dataset, observations, start_day):
 
     model = hmm_init.init_model(possible_states, possible_obs, possible_states_array, possible_obs_array, train_states_value_seq, train_obs_seq)
 
-    return model.viterbi(test_obs_vectors)
+    return model.viterbi(observations)
 
 if __name__ == '__main__':
     app.run()

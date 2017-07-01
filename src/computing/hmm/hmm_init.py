@@ -70,7 +70,7 @@ def learning_curve_train(dataset, start_day, end_day, test_day):
     conn.row_factory = sqlite3.Row
     conn.text_factory = str
     cursor = conn.cursor()
-    test = cursor.execute('SELECT * FROM ' + dataset + ' WHERE timestamp >= ?', [test_day]).fetchall()
+    test = cursor.execute('SELECT * FROM ' + dataset + ' WHERE timestamp BETWEEN ? AND ?', [test_day, test_day + timedelta(days=1)]).fetchall()
     train = cursor.execute('SELECT * FROM ' + dataset + ' WHERE timestamp BETWEEN ? AND ?', [start_day, end_day]).fetchall()
     return test, train
 

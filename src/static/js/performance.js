@@ -31,7 +31,7 @@ $(document).ready(function(){
       [   14,     0,     1,     0,     0,     0,    20,    32,   329,     0],
       [    0,     0,     2,     0,     9,     0,     8,   35,  5222,     0],
       [   24,     0,     0,     0,    11,     0,    16,     0,    77,     4]],
-      labels    : ['Sleeping', 'Toileting', 'Showering', 'Breakfast', 'Grooming', 'Spare_Time/TV', 'Leaving', 'Lunch', 'Snack', 'Dinner'],
+      labels    : ['Spare_Time/TV', 'Grooming', 'Toileting', 'Sleeping', 'Breakfast', 'Showering', 'Snack', 'Lunch', 'Leaving', 'Dinner'],
       start_color : '#7df1f6',
       end_color : '#ff0000',
       legend : '#heatMapLegendB'
@@ -49,7 +49,7 @@ $(document).ready(function(){
           borderColor: "rgb(116, 192, 241)",
           backgroundColor: "rgba(116, 192, 241, 0.2)"
         },{
-          data: [0.84556278813825947, 0.81855277382698888, 0.48507799981585142, 0.95947036380145523, 0.82063492063492072, 0.90468922611779756, 0.33616433239204224, 0.42857142857142855, 0.9871395759044681, 0.51428571428571435],
+          data: [0.95947036380145523, 0.48507799981585142, 0.90468922611779756, 0.82063492063492072, 0.81855277382698888, 0.84556278813825947, 0.9871395759044681, 0.42857142857142855, 0.33616433239204224, 0.51428571428571435],
           label: 'OrdonezB',
           borderColor: "rgb(255, 0, 0)",
           backgroundColor: "rgba(255, 0, 0, 0.2)"
