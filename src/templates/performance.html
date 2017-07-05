@@ -10,22 +10,82 @@
         <li><a data-toggle="tab" href="#fmeasureTab">F-Measure bar chart</a></li>
         <li><a data-toggle="tab" href="#accuracyTab">Accuracy radar chart</a></li>
         <li><a data-toggle="tab" href="#learningCurveTab">Learning curve line chart</a></li>
+        <li><a data-toggle="tab" href="#forwardTab">Forward test probabilities</a></li>
       </ul>
 
       <div class="tab-content">
         <div id="confusionMatricesTab" class="tab-pane fade in active">
+          <div class="row">
+            <div style="display:inline-block;" id="heatMapA"></div>
+            <div style="display:inline-block;" id="heatMapLegendA"></div>
 
-          <div style="display:inline-block;" id="heatMapA"></div>
-          <div style="display:inline-block;" id="heatMapLegendA"></div>
-
-          <div style="display:inline-block;" id="heatMapB"></div>
-          <div style="display:inline-block;" id="heatMapLegendB"></div>
+            <div style="display:inline-block;" id="heatMapB"></div>
+            <div style="display:inline-block;" id="heatMapLegendB"></div>
+          </div>
+          <div class="row">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>F-Measure</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>OrdonezA</th>
+                    <td>0.856</td>
+                    <td>0.873</td>
+                    <td>0.885</td>
+                  </tr>
+                  <tr>
+                    <th>OrdonezB</th>
+                    <td>0.603</td>
+                    <td>0.613</td>
+                    <td>0.654</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
         <div id="fmeasureTab" class="tab-pane fade">
-          <center>
-            <div id="fmeasureChart" style="height:400px; width:600px">
+          <div class="row">
+            <center>
+              <div id="fmeasureChart" style="height:400px; width:600px">
+              </div>
+            </center>
+          </div>
+          <div class="row">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>F-Measure</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>OrdonezA</th>
+                    <td>0.856</td>
+                    <td>0.873</td>
+                    <td>0.885</td>
+                  </tr>
+                  <tr>
+                    <th>OrdonezB</th>
+                    <td>0.603</td>
+                    <td>0.613</td>
+                    <td>0.654</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-          </center>
+          </div>
         </div>
         <div id="accuracyTab" class="tab-pane fade">
           <div class="row">
@@ -42,35 +102,104 @@
             </center>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="table-responsive">
-        <table class="table">
-          <thead>
-            <tr>
-              <th></th>
-              <th>F-Measure</th>
-              <th>Precision</th>
-              <th>Recall</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th>OrdonezA</th>
-              <td>0.856</td>
-              <td>0.873</td>
-              <td>0.885</td>
-            </tr>
-            <tr>
-              <th>OrdonezB</th>
-              <td>0.603</td>
-              <td>0.613</td>
-              <td>0.654</td>
-            </tr>
-          </tbody>
-        </table>
+        <div id="forwardTab" class="tab-pane fade">
+          <center>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>OrdonezA</th>
+                        <th>Random</th>
+                        <th>Dataset</th>
+                        <th>Manual</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>Run 1</th>
+                        <td>5.3080e-37</td>
+                        <td>0.0971</td>
+                        <td>3.9747e-27</td>
+                      </tr>
+                      <tr>
+                        <th>Run 2</th>
+                        <td>1.2050e-41</td>
+                        <td>3.7025-05</td>
+                        <td>5.3126e-29</td>
+                      </tr>
+                      <tr>
+                        <th>Run 3</th>
+                        <td>5.9348e-46</td>
+                        <td>1.1924e-05</td>
+                        <td>9.5571e-35</td>
+                      </tr>
+                      <tr>
+                        <th>Run 4</th>
+                        <td>8.4871e-21</td>
+                        <td>0.1093</td>
+                        <td>1.1647e-06</td>
+                      </tr>
+                      <tr>
+                        <th>Run 5</th>
+                        <td>2.1503e-33</td>
+                        <td>0.1168</td>
+                        <td>9.2818e-31</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>OrdonezB</th>
+                        <th>Random</th>
+                        <th>Dataset</th>
+                        <th>Manual</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>Run 1</th>
+                        <td>1.3149e-39</td>
+                        <td>0.06239</td>
+                        <td>5.5945e-32</td>
+                      </tr>
+                      <tr>
+                        <th>Run 2</th>
+                        <td>6.6339e-30</td>
+                        <td>0.0017</td>
+                        <td>9.5217e-16</td>
+                      </tr>
+                      <tr>
+                        <th>Run 3</th>
+                        <td>1.3129e-29</td>
+                        <td>0.0129</td>
+                        <td>1.9083e-39</td>
+                      </tr>
+                      <tr>
+                        <th>Run 4</th>
+                        <td>1.9667e-37</td>
+                        <td>4.8474e-09</td>
+                        <td>1.3443e-39</td>
+                      </tr>
+                      <tr>
+                        <th>Run 5</th>
+                        <td>1.5447e-33</td>
+                        <td>0.1875</td>
+                        <td>9.2811e-20</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </center>
+        </div>
       </div>
     </div>
   </div>
